@@ -1,4 +1,4 @@
-# TOOLS
+# INFO
 Set of quickbms scripts to manage and modify files from various games.
 
 Hi, on this repository you will find a collection of tools and scripts written by me or/and my colleagues. 
