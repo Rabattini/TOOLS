@@ -1,0 +1,15 @@
+# Script by Rabatini (Luke)
+# Herc's adventure (BIGFILE)
+# Version 0.1b
+for
+     get OFFSET LONG
+    if OFFSET == 0x4f4d4544 # "ONDINHA PROMOSSAUM PSN"
+    break
+     endif
+    get SIZE LONG
+   
+    getdstring NAME 0x00
+    if OFFSET != 0xffffffff
+        log NAME OFFSET SIZE
+    endif
+next
