@@ -1,0 +1,32 @@
+# Script by Rabatini (Luke)
+# Danger Girl (.TBX)
+# Version 0.1b
+
+findloc OFFSET long "0xfa7fd1a4" 0 ""
+
+math i = 0
+do
+
+goto offset
+
+GET DUMMY long
+GET DUMMY long
+GET NAME STRING
+
+   
+    findloc NEXT_OFFSET long "0xfa7fd1a4" 0 ""
+
+     if NEXT_OFFSET == ""
+
+        get SIZE asize
+    else
+        math SIZE = NEXT_OFFSET
+
+    endif
+    math SIZE -= OFFSET
+
+    log NAME OFFSET SIZE
+    math i += 1
+    math OFFSET = NEXT_OFFSET
+
+while NEXT_OFFSET != ""
