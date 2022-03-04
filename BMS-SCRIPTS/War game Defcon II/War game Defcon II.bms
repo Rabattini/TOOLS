@@ -1,0 +1,19 @@
+# Script by Rabatini (Luke)
+# War game Defcon II (dat)
+# Version 0.1b
+
+Get ENTRIES Long
+
+For RIP = 1 To ENTRIES
+GetDString NAME 0x0c
+GET LIXO LONG
+Get OFFSET Long
+XMath OFFSET "(OFFSET * 0x800)"
+Get SIZE Long
+GET LIXO LONGLONG
+
+log name offset size
+
+
+Next RIP
+
