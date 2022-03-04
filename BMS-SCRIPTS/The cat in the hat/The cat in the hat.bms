@@ -1,0 +1,13 @@
+# Script by Rabatini (Luke)
+# The cat in the hat (.DCP)
+# Version 0.1b
+
+goto 0x04
+get entries long
+
+for rip = 1 to entries
+get offset long
+get size long
+getdstring name 0x40
+log name offset size
+next rip
