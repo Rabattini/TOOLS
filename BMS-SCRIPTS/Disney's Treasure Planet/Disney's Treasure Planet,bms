@@ -1,0 +1,20 @@
+# Script by Rabatini (Luke)
+# Disney's Treasure Planet (INF/WAD)
+# Version 0.1b
+
+OPEN FDSE "HUB.INF" 0
+OPEN FDSE "HUB.WAD" 1
+
+get file asize 0
+XMATH ENTRIES "(FILE / 24)"
+GOTO 0
+FOR RIP = 1 to ENTRIES
+
+GET OFFSET LONG 0
+XMATH OFFSET "(OFFSET * 0X800)"
+GET SIZE LONG 0
+GETDSTRING NAME 0X10 0
+
+LOG NAME OFFSET SIZE 1
+
+Next RIP
