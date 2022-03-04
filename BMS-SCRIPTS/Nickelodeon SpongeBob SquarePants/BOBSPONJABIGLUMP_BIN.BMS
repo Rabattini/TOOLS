@@ -1,0 +1,15 @@
+# Script by Rabatini (Luke)
+# Nickelodeon SpongeBob SquarePants - SuperSponge (BIGLUMP.BIN)
+# Version 0.1b
+for
+     get OFFSET LONG
+    if OFFSET == 0x0000000 # "ONDINHA PROMOSSAUM PSN"
+    break
+     endif
+    get SIZE LONG
+   
+    getdstring NAME 0x00
+    if OFFSET != 0xffffffff
+        log NAME OFFSET SIZE
+    endif
+next
