@@ -1,0 +1,27 @@
+# Script by Rabatini (Luke)
+# Disney's Animated Storybook Mulan .POD PSX VERSION
+# Version 0.1b
+
+GET ARQUIVO BASENAME
+IDString "RPOD"
+GET NULO LONG
+GET OFFSET LONG
+GET NULO LONG
+get NULO LONG
+GET NULO LONG
+GET ENTRIES LONG 
+GET SIZE LONG
+log ARQUIVO offset size #HEADER FILE
+
+For RIP = 1 to ENTRIES
+
+GetDString NAME 0x10
+GET NULO LONG
+GET NULO LONG
+GET SIZE LONG
+GET OFFSET LONG
+
+log name offset size
+
+Next RIP
+
