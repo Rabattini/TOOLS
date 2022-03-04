@@ -1,0 +1,17 @@
+# Script by Rabatini (Luke)
+# Disney Lilo & Stitch (lilo.dat)
+# Version 0.1b
+
+Goto 4
+
+Get ENTRIES Long
+
+For RIP = 1 To ENTRIES
+Get MISC1 Long
+Get OFFSET Long
+XMath OFFSET "(OFFSET * 0x800) + 0x4000"
+Get SIZE Long
+
+log "" offset size
+
+Next RIP
