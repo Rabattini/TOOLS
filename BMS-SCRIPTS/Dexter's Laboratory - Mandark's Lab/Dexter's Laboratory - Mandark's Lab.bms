@@ -1,0 +1,14 @@
+# Script by Rabatini (Luke)
+# Dexter's Laboratory - Mandark's Lab (.bin)
+# Version 0.1b
+
+GET ENTRIES LONG
+
+FOR RIP = 1 TO ENTRIES
+
+GETDSTRING NAME 0X10
+GET SIZE LONG
+GET OFFSET LONG
+XMATH OFFSET "(OFFSET * 0X800)"
+LOG NAME OFFSET SIZE
+NEXT RIP
