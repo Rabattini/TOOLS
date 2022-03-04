@@ -1,0 +1,19 @@
+# Script by Rabatini (Luke)
+# Disney's The Emperor's New Groove  (dir/dat)
+# Version 0.1b
+
+Goto 0
+OPEN FDSE "KINGDOM.DIR" 0
+OPEN FDSE "KINGDOM.DAT" 1
+Get ENTRIES Long 0
+
+For RIP = 1 To ENTRIES
+GETDSTRING NAME 0X0C 0
+GET SIZE LONG 0
+GET OFFSET LONG 0
+SAVEPOS TMP 0
+
+log NAME OFFSET SIZE 1
+GOTO TMP 0
+
+Next RIP
