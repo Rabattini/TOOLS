@@ -1,0 +1,17 @@
+# Script by Rabatini (Luke)
+# Evil Zone (.PAC)
+# Version 0.1b
+
+Goto 8
+
+Get ENTRIES Long
+goto 0x800
+For RIP = 1 To ENTRIES
+GetDString NAME 0x0c
+Get OFFSET SHORT
+XMath OFFSET "(OFFSET * 0x800)"
+Get SIZE SHORT
+XMath SIZE "(SIZE * 0x800)"
+log name offset size
+
+Next RIP
