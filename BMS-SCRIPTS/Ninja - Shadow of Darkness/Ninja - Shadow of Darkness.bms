@@ -1,0 +1,26 @@
+# Script by Rabatini (Luke)
+# Ninja - Shadow of Darkness (.wad)
+# Version 0.1b
+
+GET FILE ASIZE
+GET ENTRIES LONG 
+GET PICA LONG # SIZE OF FILE - ASIZE
+XMATH FILE "(FILE - PICA)"
+
+For RIP = 1 to ENTRIES
+GET SIZE LONG
+GET OFFSET LONG
+XMath OFFSET "(OFFSET + FILE)"
+GetDString NAME 0x38
+
+get bisbranco asize
+xmath conta "(offset + size)"
+if conta > bisbranco
+xmath mangalho "(conta - bisbranco)"
+log name offset mangalho
+break
+endif
+
+log name offset size
+
+Next RIP
