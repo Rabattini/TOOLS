@@ -1,0 +1,15 @@
+# Script by Rabatini (Luke)
+# 102 Dalmatians Puppies to the Rescue (PSX)
+# Version 0.1b
+
+FOR
+GET OFFSET LONG
+IF OFFSET == 0X4556454c
+break
+endif
+get size long
+getdstring Name 0x00
+if OFFSET != 0XFFFFFFFF
+Log "" OFFSET SIZE
+endif
+NEXT
