@@ -1,0 +1,19 @@
+# Script by Rabatini (Luke)
+# Virus - It Is Aware (.VRS)
+# Version 0.1b
+
+goto 0x48
+get entries long
+goto 0x26c
+
+for rip = 1 to entries
+getdstring name 0x0c
+getdstring extension 0x08
+String FILENAME P "%name%.%extension%"
+get offset long
+get size long
+get null long
+log FILENAME offset size
+next rip
+
+
