@@ -1,0 +1,14 @@
+# Script by Rabatini (Luke)
+# Disney's Aladdin in Nasira's Revenge (dir/dat)
+# Version 0.1b jan/2022
+ 
+OPEN FDSE "ALADDIN.DIR" 0
+OPEN FDSE "ALADDIN.DAT" 1
+GET ENTRIES LONG 0
+
+FOR RIP = 1 TO ENTRIES
+GETDSTRING NAME 0X0C 0
+GET SIZE LONG 0
+GET OFFSET LONG 0
+LOG NAME OFFSET SIZE 1
+NEXT RIP
