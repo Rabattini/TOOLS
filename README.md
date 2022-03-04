@@ -5,7 +5,7 @@ Hi, on this repository you will find a collection of tools and scripts written b
 
 Languages used here are mostly c, c++, c# and MexScript/QuickBms.
 
-There is no need to compile my scripts to run them, BUT they require interpreters to run properly e.g. quickBMS.
+There is no need to compile my BMS FILES scripts to run them, BUT they require interpreters to run properly e.g. quickBMS.
 You can download this wonderful tool here: http://aluigi.altervista.org/papers/quickbms.zip
 
 Feel free to use my tools/scripts for your game modding projects.
