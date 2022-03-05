@@ -1,6 +1,10 @@
 # Script by Rabatini (Luke)
 # Pandora's Tower (.arr)
-# Version 0.3b
+# Version 0.4b
+
+#Pandora's Tower
+#ALAR MAGIG WORD
+# SCRIPT BY RABATINI (LUKE)
 
 get file basename
 get ext extension
@@ -37,6 +41,26 @@ log name offset size
 goto temp
 get pos short
 next A
+
+elif TYPE == 2
+goto 0x06
+endian big
+get entries short
+goto 0x10
+for rip = 1 to entries
+get mistery long
+
+get offset long
+savepos temp
+xmath name "(offset - 0x22)"
+goto name
+getdstring name 0x20
+goto temp
+get size long
+get null long
+
+log name offset size
+next rip
 
 endif
 
@@ -86,4 +110,6 @@ get pos short
 next A
 
 endif
+
+
 
