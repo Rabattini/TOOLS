@@ -1,6 +1,6 @@
 # Script by Rabatini (Luke)
 # Pandora's Tower (.arr)
-# Version 0.1b
+# Version 0.3b
 
 get file basename
 get ext extension
