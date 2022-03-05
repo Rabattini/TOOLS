@@ -1,0 +1,89 @@
+# Script by Rabatini (Luke)
+# Pandora's Tower (.arr)
+# Version 0.1b
+
+get file basename
+get ext extension
+string file + "_unpack."
+string file + ext
+getdstring id 0X04
+if id == "ALLZ"
+comtype alzss
+get FLAGS long
+get SIZE long
+get ZSIZE asize
+clog file 0 ZSIZE SIZE
+open fdse file
+idstring "ALAR"
+get TYPE byte 
+if TYPE == 3
+goto 0x06
+endian big
+get entries short
+goto 0x12
+
+for A = 1 to entries
+savepos temp
+get pos short
+
+goto pos
+get id long
+get offset long
+get size long
+getdstring lixo 0x06
+get name string
+
+log name offset size
+goto temp
+get pos short
+next A
+
+endif
+
+elif ID == "ALAR"
+get TYPE byte
+if TYPE == 2
+goto 0x06
+endian big
+get entries short
+goto 0x10
+for rip = 1 to entries
+get mistery long
+
+get offset long
+savepos temp
+xmath name "(offset - 0x22)"
+goto name
+getdstring name 0x20
+goto temp
+get size long
+get null long
+
+log name offset size
+next rip
+
+elif TYPE == 3
+goto 0x06
+endian big
+get entries short
+goto 0x12
+
+
+for A = 1 to entries
+savepos temp
+get pos short
+
+goto pos
+get id long
+get offset long
+get size long
+getdstring lixo 0x06
+get name string
+
+log name offset size
+goto temp
+get pos short
+next A
+
+endif
+
