@@ -1,0 +1,26 @@
+# Script by Rabatini (Luke)
+# 007 - The World Is Not Enough - PSX (.BIN)
+# Version 0.1b
+
+for
+
+getdstring name 0x1a
+get offset short
+
+xmath offset "(offset * 0x800)"
+
+getdstring lixo 0x1A
+get size SHORT
+SAVEPOS TEMP
+xmath size "(size * 0x800)"
+xmath file_size "(size - offset)"
+
+XMATH TEMPO "(TEMP - 28)"
+ if NAME == "NULL" # "IF FINDS NULL STRING IT BREAKS"
+    break
+     endif
+
+   log name offset file_size
+
+GOTO TEMPO
+next
