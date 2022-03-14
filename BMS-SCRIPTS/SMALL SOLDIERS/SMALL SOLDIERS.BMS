@@ -1,0 +1,15 @@
+# Script by Rabatini (Luke)
+# Small Soldiers (.RSC)
+# Version 0.1b
+
+goto 0x40
+get entries long
+get null long
+
+for rip = 1 to entries
+getdstring name 0x44
+get size long
+get offset long
+get null long
+log name offset size
+next rip
