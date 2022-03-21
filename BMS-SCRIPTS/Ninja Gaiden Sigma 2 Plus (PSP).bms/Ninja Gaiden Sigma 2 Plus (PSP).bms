@@ -1,0 +1,24 @@
+# Script by Rabatini (Luke)
+# Ninja Gaiden Sigma 2 Plus (PSP)
+# Version 0.1b
+
+Open FDSE "BASE.bin" 0
+Open FDSE "BASE.lnk" 1
+get ZEROS longlong 0
+get ZEROS longlong 1
+get ENTRIES long 0
+get ENTRIES long 1
+goto 0x14 0
+goto 0x20 1
+Get offset long 0
+goto offset 0
+For RIP = 1 to ENTRIES
+
+   Get NAME string 0
+   Get OFFSET long 1
+   Get ZEROS long 1
+   Get SIZE long 1
+   Getdstring NULLS 0x14 1
+
+   Log NAME OFFSET SIZE 0 1 1
+Next RIP
