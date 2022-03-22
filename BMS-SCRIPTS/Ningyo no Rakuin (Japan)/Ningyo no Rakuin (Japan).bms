@@ -1,0 +1,20 @@
+# Script by Rabatini (Luke)
+# Ningyo no Rakuin (Japan) (.DAT)
+# Version 0.1b
+for
+     get OFFSET LONG
+     xmath OFFSET "(OFFSET * 0X800)"	
+   
+savepos temp
+    get SIZE LONG
+    xmath size "(SIZE * 0X800)"	
+   xmath size "(size - offset)"
+    getdstring NAME 0x00
+ if SIZE == 0xFEB11800 # "ONDINHA PROMOSSAUM PSN"
+    break
+     endif
+    if OFFSET != 0xffffffff
+        log NAME OFFSET SIZE
+    endif
+goto temp
+next
