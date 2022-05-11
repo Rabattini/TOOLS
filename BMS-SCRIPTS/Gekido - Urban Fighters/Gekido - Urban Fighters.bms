@@ -1,0 +1,15 @@
+# Script by Rabatini (Luke)
+# Gekido - Urban Fighters (USA) - PSX (GLOBAL.CD)
+# Version 0.1b
+
+for 
+getdstring name 0x1c
+get size long
+get offset long
+get unknown long
+if offset == 0xa38f7b05
+break
+endif
+log name offset size
+
+next
