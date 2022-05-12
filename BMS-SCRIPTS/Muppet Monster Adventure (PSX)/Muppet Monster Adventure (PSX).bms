@@ -22,6 +22,7 @@ log name offset size 1 1
 
 savepos temp
 if temp == file
+log name offset size 1 1
 break
 endif
 
