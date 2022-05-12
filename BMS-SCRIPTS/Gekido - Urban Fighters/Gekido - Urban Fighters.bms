@@ -8,6 +8,7 @@ get size long
 get offset long
 get unknown long
 if offset == 0xa38f7b05
+log name offset size
 break
 endif
 log name offset size
