@@ -1,7 +1,9 @@
 # Script by Rabatini (Luke)
 # Wild 9 (CCD/IDX)
-# Version 0.1b
+# Version 0.2b
 
+OPEN FDSE "W9.IDX"
+OPEN FDSE "W9.CDD" 1
 Get ENTRIES Long
 
 For RIP = 1 To ENTRIES
@@ -11,9 +13,10 @@ SAVEPOS TMP
 GET SIZE LONG
 
 XMATH ROLA "(SIZE - OFFSET)"
-OPEN FDSE "W9.CDD"
-log "" OFFSET ROLA
-OPEN FDSE "W9.IDX"
+
+log "" OFFSET ROLA 1
+
 GOTO TMP
 
 Next RIP
+
