@@ -1,0 +1,24 @@
+# Script by Rabatini (Luke)
+# BLOOD+ One Night Kiss - PS2 (.BIN)
+# Version 0.1b
+
+idstring "LF 2"
+get unknown long
+get entries long
+get pointer_table long
+get name string
+savepos name_table
+goto pointer_table
+for rip = 1 to entries
+
+	get offset long
+	xmath offset "(offset * 0x800)"
+	get size long
+	savepos table
+	log name offset size
+	goto name_table
+	get name string
+	savepos name_table
+	goto table
+
+next rip
