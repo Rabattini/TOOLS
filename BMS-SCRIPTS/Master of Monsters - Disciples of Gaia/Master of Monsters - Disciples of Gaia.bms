@@ -1,0 +1,29 @@
+# Script by Rabatini (Luke)
+# Master of Monsters - Disciples of Gaia - PSX (.DAT/TBL)
+# Version 0.1b
+
+ENDIAN BIG
+
+open FDDE TBL
+open FDDE DAT 1
+get file asize
+
+
+for
+
+	getdstring name 0x08
+	getdstring extension 0x03
+	get offset long
+	get size long
+	savepos temp
+if temp == file
+	String FILENAME P "%name%.%extension%"
+	log FILENAME offset size 1 1
+	break
+endif
+	String FILENAME P "%name%.%extension%"
+	log FILENAME offset size 1 1
+	goto temp
+
+next 
+
