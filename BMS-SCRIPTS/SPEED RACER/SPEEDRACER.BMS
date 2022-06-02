@@ -1,0 +1,12 @@
+# speedracer PSX ALL1.BIN
+FOR
+GET OFFSET LONG
+IF OFFSET == 0X00000000
+break
+endif
+get size long
+
+if OFFSET != 0XFFFFFFFF
+Log "" OFFSET SIZE
+endif
+NEXT
