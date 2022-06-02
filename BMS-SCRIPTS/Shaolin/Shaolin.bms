@@ -1,0 +1,16 @@
+# Script by Rabatini (Luke)
+# SHAOLIN PSX (.FLD)
+# Version 0.1b
+for
+    get OFFSET SHORT
+   xmath offset "(offset * 0x800)"
+    if OFFSET == 0x0000 # "ONDINHA PROMOSSAUM PSN"
+    break
+     endif
+    get SIZE SHORT
+    xmath SIZE "(SIZE * 0x800)"
+    get unknown long
+    if OFFSET != 0xffffffff
+        log "" OFFSET SIZE
+    endif
+next
