@@ -1,0 +1,22 @@
+# Script by Rabatini (Luke)
+# Jackie Chan Stuntmaster PSX (.LCF/GCF)
+# Version 0.1b
+
+endian big
+Get ENTRIES Long
+set I = 0
+For RIP = 0 < ENTRIES
+getdstring extension 0x04
+Get SIZE LONG
+Get OFFSET long
+get lixo long
+if lixo = 0x00000000
+
+endif
+if lixo = 0x00000004
+get null long
+endif
+MATH I + 1
+String FILENAME P "%i%%extension%"
+log FILENAME offset size
+Next RIP
