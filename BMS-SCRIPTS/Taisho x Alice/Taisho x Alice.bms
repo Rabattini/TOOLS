@@ -1,0 +1,58 @@
+# Script by Rabatini (Luke)
+# Taisho x Alice - SWITCH (.PAK)
+# Version 0.1b
+
+get NOIDEA long
+get ENTRIES long
+get NOIDEA long
+get matematica long
+getdstring zeros 0x10
+get check long
+if check == 0x00000200
+get name_table long
+savepos pointer_table
+goto name_table
+get name string
+savepos name_table
+goto pointer_table
+
+for RIP = 1 to ENTRIES
+        
+	get OFFSET long
+	xmath OFFSET "(OFFSET * matematica)"
+	get SIZE long
+	savepos table
+	log name OFFSET SIZE
+	goto name_table
+	get name string
+	savepos name_table
+	goto table
+
+next RIP
+else
+goto 0x08
+getdstring NOIDEA 0x20
+get check long
+  if check == 0
+for RIP = 1 to ENTRIES
+
+	get OFFSET long
+	xmath OFFSET "(OFFSET * MATEMATICA)"
+	get SIZE long
+	log "" OFFSET SIZE
+next rip
+   elif check > 0
+get zeros longlong
+for RIP = 1 to ENTRIES
+
+	get OFFSET long
+	xmath OFFSET "(OFFSET * MATEMATICA)"
+	get SIZE long
+	log "" OFFSET SIZE
+
+next RIP
+	
+
+endif
+
+
