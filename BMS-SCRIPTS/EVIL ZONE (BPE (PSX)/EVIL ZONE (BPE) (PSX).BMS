@@ -1,0 +1,23 @@
+# Script by Rabatini (Luke)
+# Evil Zone (BPE)
+# Version 0.1b
+
+math NEW_FORMAT = 0
+comtype yuke_bpe
+putarray 0 0 0
+
+get UNAME filename
+string UNAME += ".unpacked"
+getdstring SIGN 4
+
+if SIGN == "BPE "
+
+    print "%SIGN% chunk"
+    get DUMMY long
+    get ZSIZE long
+    get USIZE long
+    savepos UOFFSET
+    clog UNAME UOFFSET ZSIZE USIZE
+
+    endif
+
