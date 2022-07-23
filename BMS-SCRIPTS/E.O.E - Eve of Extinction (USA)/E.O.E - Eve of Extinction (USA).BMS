@@ -1,0 +1,15 @@
+# Script by Rabatini (Luke)
+# E.O.E - Eve of Extinction (.BDH/BDP)
+# Version 0.1b
+
+OPEN FDDE "BDH" 0
+OPEN FDDE "BDP" 1
+idstring "BDP_"
+get ENTRIES long
+for RIP = 1 to ENTRIES
+get OFFSET long
+get SIZE long
+xmath OFFSET "(OFFSET *0X800)"
+xmath SIZE "(SIZE *0X800)"
+log "" OFFSET SIZE 1
+next RIP
