@@ -1,0 +1,13 @@
+# Script by Rabatini (Luke)
+# VANGUARD BANDIDS PSX (EPICA.BIN)
+# Version 0.1b
+
+get file asize
+do
+get offset long
+get size long
+if offset == file
+break
+endif
+log "" offset size
+while offset > 0
