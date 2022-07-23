@@ -1,0 +1,18 @@
+# Script by Rabatini (Luke)
+# Evil Zone (PAC)
+# Version 0.1b
+
+# AFTER UNPACK .PAC FILES
+
+idstring "PAC "
+get filesname basename
+get entries long
+for rip = 1 to entries
+get name short
+get offset Threebyte
+xmath first_offset "(entries * 8 + 8)"
+xmath offset "(first_offset + offset)"
+get size threebyte
+String FILENAME P "%filesname%_%name%.bpe"
+log filename offset size
+next rip
