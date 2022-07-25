@@ -1,0 +1,15 @@
+# Script by Rabatini (Luke)
+# kagero_-_deception_ii - PSX (.BIN)
+# Version 0.1b
+
+get file asize
+for
+
+get offset long
+math offset * 0x800
+get size long
+if offset == 0xf8356800
+break
+endif
+log "" offset size
+next
