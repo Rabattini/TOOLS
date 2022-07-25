@@ -1,0 +1,25 @@
+# Script by Rabatini (Luke)
+# THEME PARK WORLD - PSX (.GAZ)
+# Version 0.1b
+
+get entries long
+get second_entries long
+for rip = 1 to entries
+
+get offset long
+get size long
+log "" offset size
+if rip == entries
+for newrip = 1 to second_entries
+get unk long
+get offset long
+get size long
+log "" offset size
+next newrip
+endif
+
+next rip
+
+
+
+
