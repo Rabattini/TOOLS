@@ -1,0 +1,28 @@
+# Script by Rabatini (Luke)
+# GUNGRAVE (PS2) (.ytx)
+# Version 0.1b
+
+
+findloc OFFSET LONGLONG 0X0000000200000030 0 "" 0
+math i = 0
+
+get file basename
+do
+    goto OFFSET
+    get DUMMY long
+    findloc NEXT_OFFSET LONGLONG 0X0000000200000030 0 ""
+
+     if NEXT_OFFSET == ""
+
+        get SIZE asize
+    else
+        math SIZE = NEXT_OFFSET
+
+    endif
+    math SIZE -= OFFSET
+  String FILENAME P "%file%_%i%.dat"
+    log filename OFFSET SIZE
+    math i += 1
+    math OFFSET = NEXT_OFFSET
+
+while NEXT_OFFSET != ""
