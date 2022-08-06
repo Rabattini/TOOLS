@@ -1,6 +1,6 @@
 # Script by Rabatini (Luke)
 # Muppet Monster Adventure (PSX) INF/WAD
-# Version 0.1b
+# Version 0.2b
 
 GET ARCHIVE BASENAME
 String ARCHIVE1 P "%ARCHIVE%.%INF%"
@@ -9,21 +9,16 @@ String ARCHIVE2 P "%ARCHIVE%.%WAD%"
 Open FDSE ARCHIVE1
 Open FDSE ARCHIVE2 1
 
-for
-get file ASIZE 0
-get OFFSET long
+get file asize 0
+XMATH ENTRIES "(FILE / 24)"
+GOTO 0
+FOR RIP = 1 to ENTRIES
 
-xmath offset "(OFFSET * 0x800)"
-get SIZE long
+GET OFFSET LONG 0
+XMATH OFFSET "(OFFSET * 0X800)"
+GET SIZE LONG 0
+GETDSTRING NAME 0X10 0
 
-getdstring name 0x10
+LOG NAME OFFSET SIZE 1
 
-log name offset size 1 1
-
-savepos temp
-if temp == file
-log name offset size 1 1
-break
-endif
-
-next
+Next RIP
