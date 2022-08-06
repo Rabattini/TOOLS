@@ -1,9 +1,13 @@
 # Script by Rabatini (Luke)
 # Disney's Treasure Planet (INF/WAD)
-# Version 0.1b
+# Version 0.2b
 
-OPEN FDSE "HUB.INF" 0
-OPEN FDSE "HUB.WAD" 1
+GET ARCHIVE BASENAME
+String ARCHIVE1 P "%ARCHIVE%.%INF%"
+String ARCHIVE2 P "%ARCHIVE%.%WAD%"
+
+Open FDSE ARCHIVE1
+Open FDSE ARCHIVE2 1
 
 get file asize 0
 XMATH ENTRIES "(FILE / 24)"
