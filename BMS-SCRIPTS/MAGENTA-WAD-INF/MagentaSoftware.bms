@@ -1,0 +1,27 @@
+# Script by Rabatini (Luke)
+# Magenta Software (INF/WAD)
+# Disney's Treasure Planet (INF/WAD)
+# Muppet Monster Adventure (INF/WAD)
+# Stuart Little 2 (INF/WAD)
+# Version 0.2b
+
+GET ARCHIVE BASENAME
+String ARCHIVE1 P "%ARCHIVE%.%INF%"
+String ARCHIVE2 P "%ARCHIVE%.%WAD%"
+
+Open FDSE ARCHIVE1
+Open FDSE ARCHIVE2 1
+
+get file asize 0
+XMATH ENTRIES "(FILE / 24)"
+GOTO 0
+FOR RIP = 1 to ENTRIES
+
+GET OFFSET LONG 0
+XMATH OFFSET "(OFFSET * 0X800)"
+GET SIZE LONG 0
+GETDSTRING NAME 0X10 0
+
+LOG NAME OFFSET SIZE 1
+
+Next RIP
