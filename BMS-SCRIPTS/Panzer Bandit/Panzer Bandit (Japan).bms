@@ -1,0 +1,27 @@
+# Script by Rabatini (Luke)
+# Panzer Bandit PSX (.NCB)
+# Version 0.1b
+
+OPEN FDSE "SLPS_008.99"
+OPEN FDSE "KISINDAT.NCB" 1
+goto 0x7242C
+
+for rip = 1 to 198
+
+getdstring name 0x10
+get offset long
+if offset == 0
+do
+get zeros long
+while zeros == 0x00000000
+savepos temp
+xmath temp "(temp -4)"
+goto temp
+getdstring name 0x10
+get offset long
+endif
+get size long
+
+log name offset size  1 1
+
+next rip
