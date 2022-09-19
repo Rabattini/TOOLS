@@ -1,0 +1,16 @@
+# Script by Rabatini (Luke)
+# ALIAS - PS2 (.CAT)
+# Version 0.1b
+
+get ENTRIES long
+getdstring FOLDER 0x0c
+
+for rip = 1 to ENTRIES
+getdstring NAME 0x20
+
+get OFFSET long
+get SIZE long
+getdstring ZEROS 0X0C
+log NAME OFFSET SIZE
+next rip
+
