@@ -1,0 +1,25 @@
+# Script by Rabatini (Luke)
+# Psychic Force 2 (Europe) (.SLES_025.57 + PSY2.D)
+# Version 0.1b
+
+OPEN FDSE "SLES_025.57"
+OPEN FDSE "PSy2.D" 1
+goto 0x51958
+
+get entries long
+get unk long
+get zeros long
+
+for rip = 1 to 1885
+getdstring name 0x0a
+get offset short
+savepos temp
+getdstring namelixo 0x0a
+get size short
+goto temp
+xmath offset "(offset * 0x800)"
+xmath size "(size * 0x800)"
+xmath size "(size - offset)"
+log name offset size  1 1
+
+next rip
