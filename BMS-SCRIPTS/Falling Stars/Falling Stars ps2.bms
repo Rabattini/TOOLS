@@ -1,0 +1,19 @@
+# Script by Rabatini (Luke)
+# Falling Stars - PS2 (.PKF)
+# Version 0.1b
+
+idstring "PKF"
+goto -4
+get OFFSET long
+goto OFFSET
+for
+    get OFFSET long
+    get SIZE long
+    get NAME string
+
+    if OFFSET == 0  # OFFSET and SIZE are zero, NAME is ""
+        break
+    endif
+
+    log NAME OFFSET SIZE
+next
