@@ -1,0 +1,11 @@
+# Script by Rabatini (Luke)
+# Alien Ressurection psx  (bin)
+# Version 0.1b
+
+get entries long
+for rip = 1 to entries
+GETDSTRING NAME 0X0C
+get size long
+get offset long
+log name offset size
+next rip
