@@ -1,0 +1,31 @@
+# Script by Rabatini (Luke)
+# Reservoir Dogs - PS2 (.PS2)
+# Version 0.1b
+
+
+GoTo 12 0;
+Get FILES Long 0;
+Get INFO_OFF Long 0;
+Get SBNK_OFF Long 0;
+GoTo 40 0;
+Get NAMES_OFF Long 0;
+Math INFO_OFF *= 2048;
+Math SBNK_OFF *= 2048;
+Math NAMES_OFF *= 2048;
+For i = 1 To FILES;
+GoTo INFO_OFF 0;
+Get OFFSET Long 0;
+Get DUMMY Long 0;
+Get SIZE Long 0;
+Get NAMEOffset Long 0;
+Get DUMMY Long 0;
+Get DUMMY Long 0;
+Get DUMMY Long 0;
+Get DUMMY Long 0;
+SavePos INFO_OFF 0;
+Math NAMEOffset += NAMES_OFF ;
+GoTo NAMEOffset 0;
+Get NAME String 0;
+Math OFFSET *= 2048;
+Log NAME OFFSET SIZE 0 0;
+Next i;
