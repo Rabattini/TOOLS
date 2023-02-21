@@ -1,0 +1,16 @@
+# Script by Rabatini (Luke)
+# Masters of the Universe - He-Man - Defender of Grayskull (Europe) (.Tex)
+# Version 0.1b
+
+goto 0x08
+get filesize long
+get zeros long
+get entries long
+get start long
+for rip = 1 to entries
+
+getdstring name 0x0c
+get offset long
+get size long
+log name offset size
+next rip
