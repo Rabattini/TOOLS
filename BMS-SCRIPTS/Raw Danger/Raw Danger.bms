@@ -1,8 +1,11 @@
 # Script by Rabatini (Luke)
 # Raw Danger - PS2 (.FAT/DAT)
-# Version 0.1b
+# Version 0.2b
 
-OPEN FDDE FAT 0
+get fname basename
+
+if fname == "ROOT"
+OPEN FDDE FAT
 OPEN FDDE DAT 1
 
 idstring "FAT "
@@ -20,5 +23,24 @@ get name string
 savepos endfile
 goto temp
 log name offset size 1
+next rip
+endif
+if fname != "ROOT"
+
+idstring "FAT "
+get entries long
+Getdstring ZEROS 0xf8
+
+for rip = 1 to entries
+
+get offset long
+get size long
+Get namepos long
+savepos temp
+goto namepos
+get name string
+savepos endfile
+goto temp
+log name offset size
 
 next rip
