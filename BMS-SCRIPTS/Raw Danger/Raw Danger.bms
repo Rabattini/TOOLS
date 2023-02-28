@@ -4,12 +4,12 @@
 
 OPEN FDDE FAT 0
 OPEN FDDE DAT 1
-goto 0xf8
-get check long
-get zeros long
-get file asize
 
-do
+idstring "FAT "
+get entries long
+Getdstring ZEROS 0xf8
+
+for rip = 1 to entries
 
 get offset long
 get size long
@@ -21,4 +21,4 @@ savepos endfile
 goto temp
 log name offset size 1
 
-while endfile != file
+next rip
