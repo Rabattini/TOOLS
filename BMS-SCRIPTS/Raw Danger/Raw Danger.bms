@@ -1,0 +1,24 @@
+# Script by Rabatini (Luke)
+# Raw Danger - PS2 (.FAT/DAT)
+# Version 0.1b
+
+OPEN FDDE FAT 0
+OPEN FDDE DAT 1
+goto 0xf8
+get check long
+get zeros long
+get file asize
+
+do
+
+get offset long
+get size long
+Get namepos long
+savepos temp
+goto namepos
+get name string
+savepos endfile
+goto temp
+log name offset size 1
+
+while endfile != file
