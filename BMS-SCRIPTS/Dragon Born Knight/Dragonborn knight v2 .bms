@@ -1,0 +1,29 @@
+
+
+# Script by Rabatini (Luke)
+# Dragonborn knight (.PAK)
+# Version 0.1b 
+# zlib decompressed
+
+get unk long
+get entries long
+do
+get zeros long
+savepos temp
+while zeros == 0
+xmath temp "(temp -4)"
+goto temp
+xmath entries "(entries - 10)"
+
+for rip = 1 to entries
+
+getdstring name 0x40
+get offset long
+get unk long
+get size long
+get oneone long
+get ZSIZE asize
+math ZSIZE -= OFFSET
+
+clog name offset size zsize
+next rip
