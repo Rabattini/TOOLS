@@ -1,0 +1,21 @@
+# Script by Rabatini (Luke)
+# Dragonborn knight (.PAK)
+# Version 0.1b
+
+get unk long
+get entries long
+do
+get zeros long
+savepos temp
+while zeros == 0
+xmath temp "(temp -4)"
+goto temp
+for rip = 1 to entries
+getdstring name 0x40
+get offset long
+get unk long
+get size long
+get oneone long
+
+log name offset size
+next rip
