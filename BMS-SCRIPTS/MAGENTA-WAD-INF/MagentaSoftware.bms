@@ -3,14 +3,10 @@
 # Disney's Treasure Planet (INF/WAD)
 # Muppet Monster Adventure (INF/WAD)
 # Stuart Little 2 (INF/WAD)
-# Version 0.2b
+# Version 0.3b
 
-GET ARCHIVE BASENAME
-String ARCHIVE1 P "%ARCHIVE%.%INF%"
-String ARCHIVE2 P "%ARCHIVE%.%WAD%"
-
-Open FDSE ARCHIVE1
-Open FDSE ARCHIVE2 1
+Open FDDE INF
+Open FDDE WAD 1
 
 get file asize 0
 XMATH ENTRIES "(FILE / 24)"
