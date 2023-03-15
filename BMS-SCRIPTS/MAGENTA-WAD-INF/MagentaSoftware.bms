@@ -3,7 +3,7 @@
 # Disney's Treasure Planet (INF/WAD)
 # Muppet Monster Adventure (INF/WAD)
 # Stuart Little 2 (INF/WAD)
-# Version 0.3b
+# Version 0.4b
 
 Open FDDE INF
 Open FDDE WAD 1
@@ -14,7 +14,7 @@ GOTO 0
 FOR RIP = 1 to ENTRIES
 
 GET OFFSET LONG 0
-XMATH OFFSET "(OFFSET * 0X800)"
+MATH OFFSET * 0X800
 GET SIZE LONG 0
 GETDSTRING NAME 0X10 0
 
