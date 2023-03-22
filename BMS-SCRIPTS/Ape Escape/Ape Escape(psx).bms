@@ -1,0 +1,15 @@
+# Script by Rabatini (Luke)
+# Ape Escape - PSX (.HED/DAT)
+# Version 0.1b
+
+open FDSE "KKIIDDZZ.HED"
+open FDSE "KKIIDDZZ.DAT" 1
+Get however long
+
+do
+    get offset short
+    get size short
+    math offset * 0x800
+    math size * 0x80
+    log "" offset size 1
+while offset != 0
