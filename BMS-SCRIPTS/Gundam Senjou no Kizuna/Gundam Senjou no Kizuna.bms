@@ -1,0 +1,19 @@
+# Script by Rabatini (Luke)
+# Gundam Senjou no Kizuna (.pac)
+# Version 0.1b
+
+idstring "PAC"
+get id byte
+get ENTRIES long
+getdstring zeros 0x08
+getdstring folder 0x80
+for rip = 1 to entries
+
+get offset long
+get size long
+getdstring zeros 0x08
+getdstring name 0x80
+String FILENAME P "%folder%/%name%"
+log filename offset size
+next rip
+
