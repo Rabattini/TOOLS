@@ -1,0 +1,18 @@
+# Script by Rabatini (Luke)
+# Master_of_anima_text_tool
+# Version 0.1b
+
+get indicator long
+goto indicator
+get entries long
+get entriesagain long 
+
+for rip = 1 to entries
+get textsz long
+savepos offset
+slog "" offset textsz
+
+xmath next_off "(textsz + offset)"
+goto next_off
+
+next rip
