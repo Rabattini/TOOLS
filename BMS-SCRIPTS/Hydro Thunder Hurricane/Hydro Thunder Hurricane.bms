@@ -1,0 +1,17 @@
+# Script by Rabatini (Luke)
+# Hydro Thunder Hurricane (.bin)
+# Version 0.1b
+
+get unk long
+get unk long
+get unk long
+get file_size long
+get entries long
+goto 0x20
+for rip = 1 to entries
+get offset long
+get size long
+math offset * 0x800
+getdstring name 0x18
+log name offset size
+next rip
