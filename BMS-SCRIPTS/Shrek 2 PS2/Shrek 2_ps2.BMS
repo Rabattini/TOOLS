@@ -1,0 +1,18 @@
+# Script by Rabatini (Luke)
+# Shrek 2 PS2 (.PAK)
+# Version 0.1b
+
+get name string
+get offset threebyte
+get size long
+math offset * 0x800
+get entries long
+log name offset size
+
+for rip = 1 to entries
+getdstring name 0x0c
+get offset long
+get size long
+math offset * 0x800
+log name offset size
+next rip
