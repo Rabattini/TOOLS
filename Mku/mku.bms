@@ -1,0 +1,100 @@
+# Mortal Kombat: Unchained ".ssf" 0.01b
+# script for QuickBMS http://quickbms.aluigi.org
+# Rabatini (Luke)
+
+math XTYPE = 0
+get BASE_SIZE asize
+callfunction SEC_EXTRACT
+
+startfunction SEC_EXTRACT
+    savepos BASE_OFF
+    idstring " CES"
+    get DUMMY long
+    get DUMMY long
+    get DUMMY long
+    get FILES long
+    endian guess FILES
+    get SSF_SIZE long
+    if XTYPE == 0
+        if SSF_SIZE != BASE_SIZE
+            math XTYPE = 1
+        endif
+    endif
+    if XTYPE != 0
+        get SSF_SIZE long
+    endif
+
+    for i = 0 < FILES
+        get TYPE long
+        get OFFSET long
+        get SIZE long
+        if XTYPE != 0
+            get DUMMY long
+        endif
+
+        if OFFSET != 0
+            if TYPE == 6
+                math TYPE = 1
+            endif
+            if TYPE == 8
+                math TYPE = 1
+            endif
+
+            math OFFSET += BASE_OFF
+            savepos TMP
+            goto OFFSET
+            get SIGN long
+            if SIGN == 0x20434553   # " CES"
+                math TYPE = 1
+            elif SIGN == 0x53454320 # "SEC "
+                math TYPE = 1
+            else
+                math TYPE = 0
+            endif
+            goto TMP
+
+            if TYPE == 1
+                savepos TMP
+                goto OFFSET
+                math BASE_SIZE = SIZE
+                callfunction minharola
+                goto TMP
+            else
+                log "" OFFSET SIZE
+            endif
+        endif
+    next i
+endfunction
+
+startfunction minharola
+idstring " CES"
+get dummy long
+get dummy long
+get dummy long
+get entries long
+get main_ces_size long
+get file_size long
+Get type long
+savepos off
+xmath base "(entries * 16)"
+xmath base_nome "(base + off)"
+goto base_nome
+get name string
+savepos contnames
+goto off
+
+for rip = 1 to entries
+    
+    get offset long
+    get size long
+    get unk long
+    get type long
+savepos off
+log name offset size
+goto contnames
+get name string
+savepos contnames
+goto off
+    
+next rip
+endfunction
