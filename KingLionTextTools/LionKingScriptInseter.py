@@ -64,11 +64,6 @@ with open(original_file_path, 'rb') as original_file:
 
 print("Inserção concluída com sucesso")
 
-
-
-import struct
-import os
-
 nome_arquivo = output_file_path
 tamanho_arquivo = os.path.getsize(nome_arquivo)
 
