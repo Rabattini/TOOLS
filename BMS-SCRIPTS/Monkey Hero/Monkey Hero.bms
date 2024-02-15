@@ -1,0 +1,25 @@
+# Script by Rabatini (Luke)
+# Monkey Hero (USA) - PSX (.PSX BIG FILE)
+# Version 0.1b
+
+get unk long
+get filesize long
+get unk short # align?
+get entries short
+get header_size long
+get unk long # entrysize?
+get unk long # entrysize?
+goto 0x48
+
+for rip = 1 to entries
+    getdstring name 0x10
+    get offset long
+    get size long
+    
+    if size == 0x00
+        math entries + 1
+    else
+        log name offset size
+    endif
+
+next rip
