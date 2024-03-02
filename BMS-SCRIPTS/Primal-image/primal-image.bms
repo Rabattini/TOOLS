@@ -1,0 +1,25 @@
+#script by luke
+#.CIG
+
+findloc OFFSET long "0x00564552"
+math i = 0
+get dummy long
+do
+    math OFFSET + 4
+   
+    goto OFFSET
+    get NAME string
+    findloc NEXT_OFFSET long "0x00564552" "" 0
+
+    if NEXT_OFFSET == ""
+        get SIZE asize
+    else
+        math SIZE = NEXT_OFFSET
+    endif
+
+    math SIZE -= OFFSET
+    STRING PATH = NAME
+    log NAME OFFSET SIZE
+    math i += 1
+    math OFFSET = NEXT_OFFSET
+while NEXT_OFFSET != ""
