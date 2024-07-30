@@ -3,7 +3,7 @@ Set of quickbms scripts to manage and modify files from various games.
 
 Hi, on this repository you will find a collection of tools and scripts written by me or/and my colleagues. 
 
-Languages used here are mostly c, c++, c# and MexScript/QuickBms.
+Languages used here are mostly c, c++, c#, Python and MexScript/QuickBms.
 
 There is no need to compile my BMS FILES scripts to run them, BUT they require interpreters to run properly e.g. quickBMS.
 You can download this wonderful tool here: http://aluigi.altervista.org/papers/quickbms.zip
