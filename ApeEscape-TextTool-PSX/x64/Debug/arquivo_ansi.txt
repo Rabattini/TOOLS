@@ -1,0 +1,25 @@
+{0b}{01}
+------------
+O rubinho estás{0d}
+a fazere tudo{0d}
+menos a mexer com{0d}
+blade!{0d}
+{0d}
+{0f}{0b}{01}
+------------
+fica a vere jogo{0d}
+que ja tem traducao{0d}
+capas inuteis{0d}
+sigaaaaaa.{0d}
+You can also make{0d}
+the monkeys fall{0d}
+down.{0d}
+{0d}
+{0f}{0b}{0b}Press the {0a}{07}{0d}
+button to jump!{0d}
+Swing the Stun Club{0d}
+with the right{0d}
+stick.{0d}
+Jump with the {0a}{07}.{0d}
+button. Good luck!{0d}
+od luck!{0d}

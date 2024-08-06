@@ -1,0 +1,30 @@
+﻿  ApeEscape.cpp
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(43,6): warning C4101: 'opc': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(128,33): warning C4101: 'ex': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(225,14): warning C4267: '=': conversão de 'size_t' para 'int', possível perda de dados
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(208,15): warning C4101: 'offset_ini': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(207,7): warning C4101: 'begin': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(208,30): warning C4101: 'end_ponteiro': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(198,19): warning C4101: 'arquivo_saida': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(208,27): warning C4101: 'i': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(206,7): warning C4101: 'endstring': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(204,24): warning C4101: 'table': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(204,15): warning C4101: 'entries': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(393,7): warning C4101: 'cont_letras': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(402,15): warning C4101: 'begin': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(400,15): warning C4101: 'warning': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(394,8): warning C4101: 'tamanho_corrigido': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(393,20): warning C4101: 'char_cont_ant': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(403,15): warning C4101: 'char_cont_ant2': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(399,15): warning C4101: 'checksize': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(404,7): warning C4101: 'begin2': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(393,35): warning C4101: 'soma': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(396,15): warning C4101: 'Offset_ini': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(405,6): warning C4101: 'pointer_begin': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(401,15): warning C4101: 'endstring': variável local não referenciada
+C:\Users\CONCREMAT\source\repos\ApeEscape\ApeEscape\ApeEscape.cpp(393,50): warning C4101: 'table': variável local não referenciada
+  Gerando código
+  Previous IPDB was built with incompatible compiler, fall back to full compilation.
+  All 919 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finalizada a geração de código
+  ApeEscape.vcxproj -> C:\Users\CONCREMAT\source\repos\ApeEscape\x64\Release\ApeEscape.exe
