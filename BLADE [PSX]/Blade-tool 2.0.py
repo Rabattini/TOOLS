@@ -639,7 +639,7 @@ class CombinedApp(tk.Tk):
         status = ttk.Label(self, textvariable=self.status_var, relief='sunken', anchor='w')
         status.pack(side='bottom', fill='x')
           # ---------- Ícone personalizado ----------
-        self.iconbitmap(r'C:\Users\Benedicta\Downloads\output-onlinepngtools-com.ico')
+        #self.iconbitmap(r'C:\Users\Benedicta\Downloads\output-onlinepngtools-com.ico')
 
 if __name__ == "__main__":
     CombinedApp().mainloop()
