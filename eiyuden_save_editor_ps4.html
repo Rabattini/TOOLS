@@ -290,6 +290,7 @@
             <div class="nav-tabs">
                 <button class="nav-tab active" onclick="showTab(event, 'basic')">📊 Básico</button>
                 <button class="nav-tab" onclick="showTab(event, 'characters')">👥 Personagens</button>
+                <button class="nav-tab" onclick="showTab(event, 'recruitment')">📝 Recrutamento</button>
                 <button class="nav-tab" onclick="showTab(event, 'inventory')">🎒 Inventário</button>
                 <button class="nav-tab" onclick="showTab(event, 'storeroom')">📦 Armazém</button>
                 <button class="nav-tab" onclick="showTab(event, 'runes')">🔮 Runas & Lascas</button>
@@ -300,6 +301,7 @@
 
             <div id="basic" class="tab-content active"></div>
             <div id="characters" class="tab-content"></div>
+            <div id="recruitment" class="tab-content"></div>
             <div id="inventory" class="tab-content"></div>
             <div id="storeroom" class="tab-content"></div>
             <div id="runes" class="tab-content"></div>
@@ -321,7 +323,7 @@
             "3000":"Poached Egg","3001":"Miso Soup","3002":"Fried Egg","3003":"Spinach Quiche","3004":"Apple Cider Soda","3005":"Coconut Water","3006":"Marinated Seafood","3007":"Omelet","3008":"Hot Sandwich","3009":"Hamburg Steak","3010":"Salmon Steak","3011":"Spring Roll","3012":"Pot-au-feu","3013":"Tlayuda","3014":"Rabbit Stew","3015":"Ramen","3016":"Tiger Salad","3017":"Cold Pasta","3018":"Scallop Lunch Set","3019":"Bang Bang Ji","3020":"Cold Noodles","3021":"Chopan Salad","3022":"Gazpacho","3023":"Ceviche Tostadas","3024":"Nanban Fish","3025":"Black Tea Cookies","3026":"Pancakes","3027":"Jelly Beans","3028":"Lemon Honey Pickles","3029":"Steamed Bread","3030":"Lollipop","3031":"Pavlova","3032":"Sugar Toast","3033":"Baumkuchen","3034":"Colorful Macarons","3035":"Pretzel","3036":"Baked Flan","3037":"Spicy Hamburg Steak","3038":"Moonview Kebab","3039":"Tomato Sandwich","3040":"Vegetable Milk Soup","3041":"Sautéed Chicken","3042":"Umeboshi Chazuke","3043":"Vegetable Juice","3044":"Blue Impact Curry","3045":"Tom Yam Kung","3046":"Herb Chicken","3047":"Maqluba","3048":"Shrimp Doria","3049":"Raclette","3050":"Mee Siam","3051":"Cheese Fondue","3052":"Steak","3053":"Avocado Sushi","3054":"Hummus","3055":"Fresh Spring Roll","3056":"Ahi Poke","3057":"Cold Pho","3058":"Cheese on Crackers","3059":"Spiced Coffee","3060":"Mint Chip Ice Cream","3061":"Sasa Dango","3062":"Cream Cake","3063":"Herb Tea","3064":"Strawberry Milk","3065":"Shell-On Shrimp","3066":"Duck Soup","3067":"Chili con Carne","3068":"Roast Beef","3069":"Curry","3070":"Shark Fin Soup","3071":"Grilled Tutuva","3072":"Pineapple Pork","3073":"Deluxe Gyoza","3074":"Smørrebrød","3075":"Breton Galette","3076":"Nanami Ice Cream","3077":"Fruit Parfait","3078":"Blueberry Pie","3079":"Dark Chocolate Cake","3080":"Mixed Fruit","3081":"Spicy Pig's Ear","3082":"Shooting Star","3083":"Brew Bar Satay","3084":"Chocolate Pizza","3085":"Pasta Carbonara","3086":"Dragon Doria","3087":"Triple Burger","3088":"Galactic Meat","3089":"Nigiri Selection","3090":"Osechi","3091":"Cherry Pie","3092":"Golden Zucotto",
             "4002":"Runeshard of Return",
             "5000":"Runeshard of Fire 1","5001":"Runeshard of Water 1","5002":"Runeshard of Wind 1","5003":"Runeshard of Earth 1","5004":"Runeshard of Light 1","5005":"Runeshard of Darkness 1","5006":"Runeshard of Fire 2","5007":"Runeshard of Water 2","5008":"Runeshard of Wind 2","5009":"Runeshard of Earth 2","5010":"Runeshard of Light 2","5011":"Runeshard of Darkness 2","5012":"Runeshard of Fire 3","5013":"Runeshard of Water 3","5014":"Runeshard of Wind 3","5015":"Runeshard of Earth 3","5016":"Runeshard of Light 3","5017":"Runeshard of Darkness 3","5018":"Runeshard of Fire 4","5019":"Runeshard of Water 4","5020":"Runeshard of Wind 4","5021":"Runeshard of Earth 4","5022":"Runeshard of Light 4","5023":"Runeshard of Darkness 4","5024":"Runeshard of Fire 5","5025":"Runeshard of Water 5","5026":"Runeshard of Wind 5","5027":"Runeshard of Earth 5","5028":"Runeshard of Light 5","5029":"Runeshard of Darkness 5","5030":"Runeshard of Fire 6","5031":"Runeshard of Water 6","5032":"Runeshard of Wind 6","5033":"Runeshard of Earth 6","5034":"Runeshard of Light 6","5035":"Runeshard of Darkness 6","5036":"Magic Sword RS (Fire) 1","5037":"Magic Sword RS (Water) 1","5038":"Magic Sword RS (Wind) 1","5039":"Magic Sword RS (Earth) 1","5040":"Magic Sword RS (Light) 1","5041":"Magic Sword RS (Dark) 1","5042":"Magic Sword RS (Fire) 2","5043":"Magic Sword RS (Water) 2","5044":"Magic Sword RS (Wind) 2","5045":"Magic Sword RS (Earth) 2","5046":"Magic Sword RS (Light) 2","5047":"Magic Sword RS (Dark) 2",
-            "6000":"Leather Hat","6001":"Wooden Headguard","6002":"Bronze Helmet","6003":"Headgear","6004":"Scale Helmet","6005":"Face Guard","6006":"Platinum Helmet","6007":"Black Iron Helmet","6008":"Magic Helmet","6009":"Combat Helmet","6010":"Crescent Guard","6011":"Dragonscale Helmet","6012":"Viking Helmet","6013":"Orichalcum Guard","6014":"League Helmet","6015":"Iron Cap","6016":"Knight's Guard","6017":"Bloodstained Helmet","6018":"Sacred Helmet","6019":"Primordial Helmet","6100":"Leather Helm","6101":"Wooden Helm","6102":"Bronze Helm","6103":"Iron Mask","6104":"Scale Helm","6105":"Solid Helm","6106":"Platinum Helm","6107":"Black Helm","6108":"Magical Helm","6109":"Great Helm","6110":"Moon Helm","6111":"Dragon Headgear","6112":"Armet Helm","6113":"Orichalcum Helm","6114":"League Face Guard","6115":"Heavy Helm","6116":"Beetle Headgear","6117":"Veteran's Face Guard","6118":"Blessed Heavy Helm","6119":"Primordial Face Guard","6200":"Headband","6201":"Cloth Wear","6202":"Scarf","6203":"Traveler's Clothes","6204":"Tricorne Hat","6205":"Thick Robe","6206":"Crown","6207":"Cutproof Vest","6208":"Hard Scale Band","6209":"Hard Scale Robe","6210":"Steel Band","6211":"Steel Cape","6212":"Platinum Crown","6213":"White Clothes","6214":"Black Threaded Hood","6215":"Black Clothes","6216":"Magic Hat","6217":"Magic Feathered Robe","6218":"Strong Hat","6219":"Double Cross","6220":"Lunar Veil","6221":"Lunar Feathered Robe","6222":"Dragon Whisker Hat","6223":"Dragon Whisker Robe","6224":"Circlet","6225":"Cleric","6226":"Verdant Scarf","6227":"Verdant Feather Robe","6228":"League Scarf","6229":"League Robe","6230":"Feathered Hat","6231":"Evasive Garb","6232":"Energizing Scarf","6233":"Crown of Guile","6234":"Holy Circlet","6235":"Holy Vestments","6236":"Primordial Scarf","6237":"Primordial Robe","6238":"Red Riding Hood","6239":"Hunter's Suit","6300":"Leather Vest","6301":"Shoulder Guard","6302":"Bronze Fauld","6303":"Chain Mail","6304":"Scale Armor","6305":"Body Armor","6306":"Platinum Light Armor","6307":"Black Chain Mail","6308":"Magic Fauld","6309":"Brigandine","6310":"Crescent Vest","6311":"Dragonscale Armor","6312":"Coat of Plates","6313":"Verdant Vest","6314":"League Light Armor","6315":"Spiked Armor","6316":"Primordial Lt Armor","6400":"Breastplate","6401":"Tempered Breastplate","6600":"Leather Shield","6601":"Wooden Shield","6602":"Bronze Shield","6603":"Buckler","6604":"Round Scale Shield","6605":"Reinforced Buckler","6606":"Light Shield","6607":"Dark Shield","6608":"Magic Shield","6609":"Tower Shield","6610":"Mirror Shield","6611":"Dragon Shield","6612":"Kite Shield","6613":"Orichalcum Shield","6614":"League Shield","6615":"Fluffy Shield","6616":"Ancient Shield","6617":"Blessed Shield","6618":"Primordial Shield","6619":"Wild Tower Shield","6700":"Lucky Badge","6701":"Super Lucky Badge","6702":"Growth Badge","6703":"Ascent Badge","6704":"Earning Badge","6705":"Wealth Badge","6706":"Monster Repel Charm","6707":"Monster Attract Charm","6708":"Dash Boots","6709":"Red Stone","6710":"Blue Stone","6711":"Green Stone","6712":"Brown Stone","6713":"White Stone","6714":"Black Stone","6715":"Diamond Style Thimble","6716":"Striped Thimble","6717":"Tortoiseshell Thimble","6718":"Flowing Style Thimble","6719":"Arrow Style Thimble","6720":"Red Crystal","6721":"Blue Crystal","6722":"Green Crystal","6723":"Brown Crystal","6724":"White Crystal","6725":"Black Crystal","6726":"Diamond Style Glove","6727":"Striped Glove","6728":"Tortoiseshell Glove","6729":"Flowing Style Glove","6730":"Arrow Style Glove","6731":"Red Symbol","6732":"Blue Symbol","6733":"Green Symbol","6734":"Brown Symbol","6735":"White Symbol","6736":"Black Symbol","6737":"Diamond Style Bracer","6738":"Striped Bracer","6739":"Tortoiseshell Bracer","6740":"Flowing Style Bracer","6741":"Arrow Style Bracer","6742":"Elemental Crystal","6743":"Elemental Symbol","6744":"Material Crystal","6745":"Material Symbol","6746":"Malachite Ring","6747":"Malachite Brooch","6748":"Malachite Bangle","6749":"Turquoise Ring","6750":"Turquoise Brooch","6751":"Turquoise Bangle","6752":"Ruby Ring","6753":"Ruby Brooch","6754":"Ruby Bangle","6755":"Tanzanite Ring","6756":"Tanzanite Brooch","6757":"Tanzanite Bangle","6758":"Pearl Ring","6759":"Pearl Brooch","6760":"Pearl Bangle","6761":"Peridot Ring","6762":"Peridot Brooch","6763":"Peridot Bangle","6767":"Opal Ring","6768":"Opal Brooch","6769":"Opal Bangle","6770":"Necklace","6771":"Spinel Necklace","6772":"Lethal Necklace","6773":"Glasses","6774":"Eyepatch","6775":"True Sight Glasses","6776":"Armband","6777":"Focusing Armband","6778":"Forceful Armband","6779":"Bracelet","6780":"Citrine Bracelet","6781":"Preventive Bracelet","6782":"Leather Shoes","6783":"Wyvern Leather Shoes","6784":"Shoes of Flight","6785":"Ribbon","6786":"Cute Ribbon","6787":"Warded Ribbon","6788":"Belt","6789":"Challenger's Belt","6790":"Champion's Belt","6791":"Sphene Bangle","6792":"Anti-Poison Beads","6793":"Anti-Poison Corsage","6794":"Anti-Poison Scarf","6795":"Anti-Paral. Beads","6796":"Anti-Paral. Corsage","6797":"Anti-Paral. Scarf","6798":"Anti-Sleep Beads","6799":"Anti-Sleep Corsage","6800":"Anti-Sleep Scarf","6801":"Anti-Petrify Beads","6802":"Anti-Petrify Corsage","6803":"Anti-Petrify Scarf","6804":"Anti-Seal Beads","6805":"Anti-Seal Corsage","6806":"Anti-Seal Scarf","6807":"Anti-Confuse Beads","6808":"Anti-Confuse Corsage","6809":"Anti-Confuse Scarf","6810":"Anti-Blind Beads","6811":"Anti-Blind Corsage","6812":"Anti-Blind Scarf","6813":"Sunstone Ring","6814":"Sunstone Brooch","6815":"Sunstone Bangle","6816":"Topaz Ring","6817":"Topaz Brooch","6818":"Topaz Bangle","6819":"Amethyst Ring","6820":"Amethyst Brooch","6821":"Amethyst Bangle","6822":"Defensive Brooch","6823":"Defensive Bangle","6824":"Mystical Brooch","6825":"Mystical Bangle","6826":"Sparklestone","6827":"Masquerade Mask","6828":"Glass Slipper","6829":"Eggfoot Stone","6830":"Mach Egg Stone","6831":"Odd Egg Stone","6832":"Frost Egg Stone","6833":"Shell Egg Stone","6834":"Chron's Medal","6835":"Mark of a Hero",
+            "6000":"Leather Hat","6001":"Wooden Headguard","6002":"Bronze Helmet","6003":"Headgear","6004":"Scale Helmet","6005":"Face Guard","6006":"Platinum Helmet","6007":"Black Iron Helmet","6008":"Magic Helmet","6009":"Combat Helmet","6010":"Crescent Guard","6011":"Dragonscale Helmet","6012":"Viking Helmet","6013":"Orichalcum Guard","6014":"League Helmet","6015":"Iron Cap","6016":"Knight's Guard","6017":"Bloodstained Helmet","6018":"Sacred Helmet","6019":"Primordial Helmet","6100":"Leather Helm","6101":"Wooden Helm","6102":"Bronze Helm","6103":"Iron Mask","6104":"Scale Helm","6105":"Solid Helm","6106":"Platinum Helm","6107":"Black Helm","6108":"Magical Helm","6109":"Great Helm","6110":"Moon Helm","6111":"Dragon Headgear","6112":"Armet Helm","6113":"Orichalcum Helm","6114":"League Face Guard","6115":"Heavy Helm","6116":"Beetle Headgear","6117":"Veteran's Face Guard","6118":"Blessed Heavy Helm","6119":"Primordial Face Guard","6200":"Headband","6201":"Cloth Wear","6202":"Scarf","6203":"Traveler's Clothes","6204":"Tricorne Hat","6205":"Thick Robe","6206":"Crown","6207":"Cutproof Vest","6208":"Hard Scale Band","6209":"Hard Scale Robe","6210":"Steel Band","6211":"Steel Cape","6212":"Platinum Crown","6213":"White Clothes","6214":"Black Threaded Hood","6215":"Black Clothes","6216":"Magic Hat","6217":"Magic Feathered Robe","6218":"Strong Hat","6219":"Double Cross","6220":"Lunar Veil","6221":"Lunar Feathered Robe","6222":"Dragon Whisker Hat","6223":"Dragon Whisker Robe","6224":"Circlet","6225":"Cleric","6226":"Verdant Scarf","6227":"Verdant Feather Robe","6228":"League Scarf","6229":"League Robe","6230":"Feathered Hat","6231":"Evasive Garb","6232":"Energizing Scarf","6233":"Crown of Guile","6234":"Holy Circlet","6235":"Holy Vestments","6236":"Primordial Scarf","6237":"Primordial Robe","6238":"Red Riding Hood","6239":"Hunter's Suit","6300":"Leather Vest","6301":"Shoulder Guard","6302":"Bronze Fauld","6303":"Chain Mail","6304":"Scale Armor","6305":"Body Armor","6306":"Platinum Light Armor","6307":"Black Chain Mail","6308":"Magic Fauld","6309":"Brigandine","6310":"Crescent Vest","6311":"Dragonscale Armor","6312":"Coat of Plates","6313":"Verdant Vest","6314":"League Light Armor","6315":"Spiked Armor","6316":"Primordial Lt Armor","6400":"Breastplate","6401":"Tempered Breastplate","6600":"Leather Shield","6601":"Wooden Shield","6602":"Bronze Shield","6603":"Buckler","6604":"Round Scale Shield","6605":"Reinforced Buckler","6606":"Light Shield","6607":"Dark Shield","6608":"Magic Shield","6609":"Tower Shield","6610":"Mirror Shield","6611":"Dragon Shield","6612":"Kite Shield","6613":"Orichalcum Shield","6614":"League Shield","6615":"Fluffy Shield","6616":"Ancient Shield","6617":"Blessed Shield","6618":"Primordial Shield","6619":"Wild Tower Shield","6700":"Lucky Badge","6701":"Super Lucky Badge","6702":"Growth Badge","6703":"Ascent Badge","6704":"Earning Badge","6705":"Wealth Badge","6706":"Monster Repel Charm","6707":"Monster Attract Charm","6708":"Dash Boots","6709":"Red Stone","6710":"Blue Stone","6711":"Green Stone","6712":"Brown Stone","6713":"White Stone","6714":"Black Stone","6715":"Diamond Style Thimble","6716":"Striped Thimble","6717":"Tortoiseshell Thimble","6718":"Flowing Style Thimble","6719":"Arrow Style Thimble","6720":"Red Crystal","6721":"Blue Crystal","6722":"Green Crystal","6723":"Brown Crystal","6724":"White Crystal","6725":"Black Crystal","6726":"Diamond Style Glove","6727":"Striped Glove","6728":"Tortoiseshell Glove","6729":"Flowing Style Glove","6730":"Arrow Style Glove","6731":"Red Symbol","6732":"Blue Symbol","6733":"Green Symbol","6734":"Brown Symbol","6-735":"White Symbol","6736":"Black Symbol","6737":"Diamond Style Bracer","6738":"Striped Bracer","6739":"Tortoiseshell Bracer","6740":"Flowing Style Bracer","6741":"Arrow Style Bracer","6742":"Elemental Crystal","6743":"Elemental Symbol","6744":"Material Crystal","6745":"Material Symbol","6746":"Malachite Ring","6747":"Malachite Brooch","6748":"Malachite Bangle","6749":"Turquoise Ring","6750":"Turquoise Brooch","6751":"Turquoise Bangle","6752":"Ruby Ring","6753":"Ruby Brooch","6754":"Ruby Bangle","6755":"Tanzanite Ring","6756":"Tanzanite Brooch","6757":"Tanzanite Bangle","6758":"Pearl Ring","6759":"Pearl Brooch","6760":"Pearl Bangle","6761":"Peridot Ring","6762":"Peridot Brooch","6763":"Peridot Bangle","6767":"Opal Ring","6768":"Opal Brooch","6769":"Opal Bangle","6770":"Necklace","6771":"Spinel Necklace","6772":"Lethal Necklace","6773":"Glasses","6774":"Eyepatch","6775":"True Sight Glasses","6776":"Armband","6777":"Focusing Armband","6778":"Forceful Armband","6779":"Bracelet","6780":"Citrine Bracelet","6781":"Preventive Bracelet","6782":"Leather Shoes","6783":"Wyvern Leather Shoes","6784":"Shoes of Flight","6785":"Ribbon","6786":"Cute Ribbon","6787":"Warded Ribbon","6788":"Belt","6789":"Challenger's Belt","6790":"Champion's Belt","6791":"Sphene Bangle","6792":"Anti-Poison Beads","6793":"Anti-Poison Corsage","6794":"Anti-Poison Scarf","6795":"Anti-Paral. Beads","6796":"Anti-Paral. Corsage","6797":"Anti-Paral. Scarf","6798":"Anti-Sleep Beads","6799":"Anti-Sleep Corsage","6800":"Anti-Sleep Scarf","6801":"Anti-Petrify Beads","6802":"Anti-Petrify Corsage","6803":"Anti-Petrify Scarf","6804":"Anti-Seal Beads","6805":"Anti-Seal Corsage","6806":"Anti-Seal Scarf","6807":"Anti-Confuse Beads","6808":"Anti-Confuse Corsage","6809":"Anti-Confuse Scarf","6810":"Anti-Blind Beads","6811":"Anti-Blind Corsage","6812":"Anti-Blind Scarf","6813":"Sunstone Ring","6814":"Sunstone Brooch","6815":"Sunstone Bangle","6816":"Topaz Ring","6817":"Topaz Brooch","6818":"Topaz Bangle","6819":"Amethyst Ring","6820":"Amethyst Brooch","6821":"Amethyst Bangle","6822":"Defensive Brooch","6823":"Defensive Bangle","6824":"Mystical Brooch","6825":"Mystical Bangle","6826":"Sparklestone","6827":"Masquerade Mask","6828":"Glass Slipper","6829":"Eggfoot Stone","6830":"Mach Egg Stone","6831":"Odd Egg Stone","6832":"Frost Egg Stone","6833":"Shell Egg Stone","6834":"Chron's Medal","6835":"Mark of a Hero",
             "7000":"Rune of Fire","7001":"Rune of Inferno","7002":"Rune of Conflagration","7010":"Rune of Water","7011":"Rune of Currents","7012":"Rune of Pure Water","7020":"Rune of Wind","7021":"Rune of Storm","7022":"Rune of Tempest","7030":"Rune of Earth","7031":"Rune of Stone","7032":"Rune of Land","7040":"Rune of Light","7041":"Rune of Radiance","7042":"Rune of Brilliance","7050":"Rune of Dark","7051":"Rune of the Abyss","7052":"Rune of the Void","7053":"Rune of Fire Enchantment","7054":"Rune of Water Enchantment","7055":"Rune of Wind Enchantment","7056":"Rune of Earth Enchantment","7057":"Rune of Light Enchantment","7058":"Rune of Dark Enchantment","7100":"Rune of Quick Slash","7101":"Rune of Sleep Slash","7102":"Rune of Reckless Slash","7103":"Rune of Armor Pierce","7104":"Rune of Feint Thrust","7105":"Rune of Paralyzing Thrust","7106":"Rune of Armor Break","7107":"Rune of Power Smash","7108":"Rune of Ground Shatter","7109":"Rune of Charge Smash","7110":"Rune of Armor Piercing","7111":"Rune of Channel Qi Attack","7112":"Rune of Cheap Shot","7113":"Rune of Sidewinder","7114":"Rune of Slowing Shot","7115":"Rune of Aimed Shot","7116":"Rune of Rapid Shot","7200":"Rune of the Warrior's Path","7201":"Rune of the Mage's Path","7202":"Rune of the Knight's Path","7203":"Rune of SP Charge","7204":"Rune of SP Conversion: Power","7205":"Rune of SP Conversion: Mighty Power","7206":"Rune of SP Conversion: Magic","7207":"Rune of SP Conversion: High Magic","7208":"Rune of SP Conversion: Speed","7209":"Rune of SP Conversion: Swift Speed","7210":"Rune of SP Conversion: Defense","7211":"Rune of SP Conversion: Iron Defense","7212":"Rune of the Warrior's Pinnacle","7213":"Rune of the Mage's Pinnacle","7214":"Rune of the Sniper's Pinnacle","7215":"Rune of the Firefly","7216":"Rune of Obscured Sight","7217":"Rune of Medical Studies","7218":"Rune of Runeshard Studies","7219":"Rune of Tenacity","7220":"Rune of Golem Disassembly","7221":"Rune of the Magical Font","7222":"Rune of Alicanto's Blessing","7223":"Rune of Conservation","7224":"Rune of the Necromancer's Secrets","7225":"Rune of the Fortress","7226":"Rune of This Beigoma Is Mine!","7227":"Rune of This Treasure Chest Is Mine!","7228":"Rune of Chivalry","7300":"Rune of Power","7301":"Rune of Mighty Power","7302":"Rune of Tremendous Power","7303":"Rune of Magic","7304":"Rune of High Magic","7305":"Rune of Arcane Magic","7306":"Rune of Speed","7307":"Rune of Swift Speed","7308":"Rune of Supersonic Speed","7309":"Rune of Skill","7310":"Rune of Peerless Skill","7311":"Rune of Divine Skill","7312":"Rune of Luck","7313":"Rune of Great Luck","7314":"Rune of Blessed Luck","7315":"Rune of Defense","7316":"Rune of Hardened Defense","7317":"Rune of Impregnable Defense","7318":"Rune of Resistance","7319":"Rune of Veiled Resistance","7320":"Rune of Impassable Resistance","7321":"Rune of HP","7322":"Rune of HP+","7323":"Rune of MP","7324":"Rune of MP+","7325":"Rune of SP","7326":"Rune of SP+","7327":"Rune of Armor","7328":"Rune of Bulwark","7329":"Rune of Interference","7330":"Rune of Prevention","7331":"Rune of Foresight","7332":"Rune of Clairvoyance","7333":"Rune of Quick Movement","7334":"Rune of Slash Resistance","7335":"Rune of Thrust Resistance","7336":"Rune of Martial Resistance","7337":"Rune of Blunt Resistance","7338":"Rune of Flying Resistance","7339":"Rune of Fire Resistance","7340":"Rune of Water Resistance","7341":"Rune of Wind Resistance","7342":"Rune of Earth Resistance","7343":"Rune of Light Resistance","7344":"Rune of Dark Resistance","7345":"Rune of Poison Resistance","7346":"Rune of Paralysis Resistance","7347":"Rune of Sleep Resistance","7348":"Rune of Petrification Resistance","7349":"Rune of Blind Resistance","7350":"Rune of Confusion Resistance","7351":"Rune of Lens-Seal Resistance","7352":"Rune of Poison Immunity","7353":"Rune of Paralysis Immunity","7500":"Rune of Swinging Slash","7501":"Rune of Chain Smash","7502":"Rune of Searing Blast Wave","7503":"Rune of Sword Rain","7504":"Rune of Lightning Rush","7505":"Rune of Flame","7506":"Rune of Dragon","7507":"Rune of Double Slash","7508":"Rune of Full Torque Spinning Punch","7509":"Rune of Iaido Strike","7510":"Rune of Magical Cutie Shot","7511":"Rune of Magical Lyrical Shot","7512":"Rune of Magical Sweet Explosion","7513":"Rune of Jaw Crush","7514":"Rune of Magic Strike","7515":"Rune of Pooby: help!","7516":"Rune of Magic Barrage","7517":"Rune of Summon Revenant Army","7518":"Rune of Skeleton King Flick","7519":"Rune of Summon Skeleton King","7520":"Rune of Shadow Clone Jutsu","7521":"Rune of Friend Attack","7522":"Rune of Muscle Boost Magic","7523":"Rune of Full Power & Focus Magic","7524":"Rune of Blinding Fog","7525":"Rune of Lion's Roar Flamethrower","7526":"Rune of Killing Shot","7527":"Rune of Take That!","7528":"Rune of Get Lost!","7529":"Rune of You've Pissed Me Off!","7530":"Rune of Full Spin Rocket Hammer","7531":"Rune of Channel Qi: Transformation","7532":"Rune of Channel Qi : Last Resort","7533":"Rune of Slash","7534":"Rune of Sniper Arrow","7535":"Rune of Magical Guided Missile Burst","7536":"Rune of Heat Breath","7537":"Rune of Twin Cyclone","7538":"Rune of Rain of Arrows","7539":"Rune of Calm Fury","7540":"Rune of Flying Alicanto","7541":"Rune of Summon Revenant Army","7542":"Rune of Skeleton King Flick","7543":"Rune of Blessing of Proven Verdure","7544":"Rune of Gold Rush","7545":"Rune of Ice Needle","7546":"Rune of Draconic Fury","7547":"Rune of Hail of Flails","7548":"Rune of Full Force Clacker","7549":"Rune of Herbal Alchemy",
             "8000":"Poached Egg Recipe","8001":"Miso Soup Recipe","8002":"Fried Egg Recipe","8003":"Spinach Quiche Recipe","8004":"Apple Cider Vinegar Soda Recipe","8005":"Coconut Water Recipe","8006":"Marinated Seafood Recipe","8007":"Omelet Recipe","8008":"Hot Sandwich Recipe","8009":"Hamburg Steak Recipe","8010":"Salmon Steak Recipe","8011":"Spring Roll Recipe","8012":"Pot-au-feu Recipe","8013":"Tlayuda Recipe","8014":"Rabbit Stew Recipe","8015":"Ramen Recipe","8016":"Tiger Salad Recipe","8017":"Cold Pasta Recipe","8018":"Scallop Lunch Set Recipe","8019":"Bang Bang Ji Recipe","8020":"Cold Noodles Recipe","8021":"Chopan Salad Recipe","8022":"Gazpacho Recipe","8023":"Ceviche Tostadas Recipe","8024":"Nanban Marinated Fish Recipe","8025":"Black Tea Cookies Recipe","8026":"Pancakes Recipe","8027":"Jelly Beans Recipe","8028":"Lemon Honey Pickles Recipe","8029":"Steamed Bread Recipe","8030":"Lollipop Recipe","8031":"Pavlova Recipe","8032":"Sugar Toast Recipe","8033":"Baumkuchen Recipe","8034":"Colorful Macarons Recipe","8035":"Pretzel Recipe","8036":"Baked Flan Recipe","8037":"Spicy Cheese Hamburg Steak Recipe","8038":"Moonview Kebab Recipe","8039":"Tomato and Cheese Sandwich Recipe","8040":"Vegetable Milk Soup Recipe","8041":"Sautéed Chicken Breast Recipe","8042":"Umeboshi Chazuke Recipe","8043":"Vegetable Juice Recipe","8044":"Blue Impact Curry Recipe","8045":"Tom Yam Kung Recipe","8046":"Herb Chicken Recipe","8047":"Maqluba Recipe","8048":"Shrimp Doria Recipe","8049":"Raclette Recipe","8050":"Mee Siam Recipe","8051":"Cheese Fondue Recipe","8052":"Steak Recipe","8053":"Avocado Sushi Recipe","8054":"Hummus Recipe","8055":"Fresh Spring Roll Recipe","8056":"Ahi Poke Recipe","8057":"Cold Pho Recipe","8058":"Cream Cheese on Crackers Recipe","8059":"Spiced Coffee Recipe","8060":"Mint Chocolate Ice Cream Recipe","8061":"Sasa Dango Recipe","8062":"Cream Cake Recipe","8063":"Herb Tea Recipe","8064":"Strawberry Milk Recipe","8065":"Shell-On Fried Shrimp Recipe","8066":"Duck Soup Recipe","8067":"Chili con Carne Recipe","8068":"Roast Beef Recipe","8069":"Curry Recipe","8070":"Shark Fin Soup Recipe","8071":"Grilled Tutuva Recipe","8072":"Pineapple Pork Recipe","8073":"Deluxe Gyoza Recipe","8074":"Smørrebrød Recipe","8075":"Breton Galette Recipe","8076":"Nanami Ice Cream Recipe","8077":"Fruit Parfait Recipe","8078":"Blueberry Pie Recipe","8079":"Dark Chocolate Cake Recipe","8080":"Mixed Fruit Recipe","8081":"Spicy Pigs' Ear Recipe","8082":"Shooting Star Recipe","8083":"Brew Bar Satay Recipe","8084":"Chocolate Pizza Recipe","8085":"Pasta Carbonara Recipe","8086":"Dragon Doria Recipe","8087":"Triple Decker Burger Recipe","8088":"Galactic Meat Recipe","8089":"Special Selection Nigiri Recipe","8090":"Osechi Recipe","8091":"Cherry Pie Recipe","8092":"Golden Zucotto Recipe","8101":"Faded Book: Chapter 1","8102":"Faded Book: Chapter 2","8103":"Faded Book: Chapter 3","8104":"Faded Book: Chapter 4","8105":"Faded Book: Chapter 5","8106":"Faded Book: Chapter 6","8107":"Faded Book: Chapter 7","8108":"Faded Book: Chapter 8","8109":"Faded Book: Chapter 9","8110":"Faded Book: Chapter 10","8111":"Faded Book: Chapter 11","8112":"Faded Book: Chapter 12","8113":"Faded Book: Chapter 13","8114":"Faded Book: Chapter 14","8115":"Faded Book: Chapter 15","8116":"Faded Book: Chapter 16","8117":"Faded Book: Chapter 17","8118":"Faded Book: Chapter 18","8119":"Faded Book: Chapter 19","8120":"Faded Book: Chapter 20","8201":"Red Riding Hood Script","8202":"The Star-Cross'd Lovers Script","8203":"Cinderella Script","8204":"Forest Musicians Script","8205":"Rising Script",
             "9000":"Unknown Coin","9001":"Unknown Coin","9002":"Unknown Coin","9003":"Unknown Coin","9004":"Unknown Pocket-Watch","9005":"Unknown Pocket-Watch","9006":"Unknown Pocket-Watch","9007":"Unknown Pocket-Watch","9008":"Unknown Antique","9009":"Unknown Antique","9010":"Unknown Antique","9011":"Unknown Antique","9100":"Commemorative Coin","9101":"Gold Coin","9102":"Royal Gold Coin","9103":"Ancient Coin","9104":"Wind-Up Pocket-Watch","9105":"Pearl Pocket-Watch","9106":"Self-Winding Pocket-Watch","9107":"Dragon-Inscribed Pocket-Watch","9108":"Wooden Lucky Cat","9109":"Yellow Rose Censer","9110":"Porcelain Vase","9111":"Astrolabe",
@@ -343,7 +345,7 @@
         const RECIPES_DB = Object.fromEntries(Object.entries(ALL_ITEMS_DB).filter(([id]) => id >= 8000 && id < 8100));
         const BEIGOMA_DB = Object.fromEntries(Object.entries(ALL_ITEMS_DB).filter(([id]) => id >= 72001 && id <= 72999));
         const ALL_FISH_IDS = Array.from({length: 52}, (_, i) => i + 1);
-        const ENEMIES_DB = {1:"Plantvine",2:"Sahagin",3:"Sea Ghost",4:"Desert Crab",5:"Petit Gargoyle",6:"Corpse Rider",7:"Seed Conqueror",8:"Lizard",9:"Cockatrice (Hatchling)",10:"Cockatrice (Adult)",11:"Tyrant Tortoise",12:"Sandfish",13:"Huge Mite",14:"Scorpion Assassin",15:"Wild Boar",16:"Titan Slug",17:"Killer Fungus",18:"Earth Dragon",19:"Hraesvelgr",20:"Rabbit Knight",21:"Rabbit Mage",22:"Bear Rider",23:"Wyvern",24:"Gigas",25:"Hellhound",26:"Carbuncle",27:"Pawn Demon",28:"Cactus Predator",29:"Remora",30:"Desert Serval",31:"Assault Tiger",32:"Snow Boxer",33:"Azhdahag",34:"Grimeoid",35:"Hellflower",36:"Nidhoggr",37:"Balor",38:"Dragon Viper",39:"Angry Bat",40:"Soul Reaper",41:"Arch-Demon",42:"Xibalba",43:"Mandibuster",44:"Raging Mandibuster",45:"Gentle Mandibuster",46:"Venom Mite",47:"Paralyzing Mite",48:"Numbing Mite",49:"Azure Frog",50:"Ochre Frog",51:"Veridian Frog",52:"Hippogriff",53:"Lesser Demon",54:"Greater Demon",55:"Rabbit Soldier",56:"Rabbit Sergeant",57:"Rabbit Captain",58:"Ancient Golem",59:"Runic Golem",60:"Omega Golem",61:"Tutti",62:"Fruiti",63:"Veggie",64:"Spear-Houser",65:"Sword-Houser",66:"Axe-Houser",67:"Ettin",68:"Fenrir",69:"Elder Dragon",70:"Bifrost",71:"Einherjar",72:"Rhinopede",73:"Sand Blaster",74:"Rock Blaster",75:"Hard-Shelled Rhinox",76:"Heavy-Armored Rhinox",77:"Hell-Armored Rhinox",78:"Mespede",79:"Milsede",80:"Hardshell",81:"Magmashell",82:"Ironshell",83:"Ancient Seed",84:"Elder Seed",85:"Primordial Seed",86:"Tarantulus",87:"Desert Rose",88:"Tundra Rose",89:"Volcanic Rose",90:"Rock Golem",91:"Basalt Golem",92:"Garnet Golem",93:"Yowie",94:"Yeti",95:"Sasquatch",96:"Siren",97:"Harpy",98:"Dark Lurker",99:"Cave Lurker",100:"Abyss Lurker",101:"Savage Girl",102:"Wild Girl",103:"Feral Girl",104:"Pea-Poucher",105:"Bean-Poucher",106:"Seed-Poucher",107:"Maneater",108:"Peat Eater",109:"Ancient Eater",110:"Specter",111:"Phantasm",112:"Wraith",113:"Flame Gel",114:"Aqua Gel",115:"Terra Gel",116:"Proto-Slinger",117:"Slinger",118:"Master-Slinger",119:"Proto-Brawler",120:"Brawler",121:"Master-Brawler",122:"Proto-Sorcerer",123:"Sorcerer",124:"Master-Sorcerer",125:"Gryphon",126:"Spector (Blue)",127:"Spector (Red)",128:"Spector (Green)",129:"Spector (Yellow)",130:"Imperial Soldier",131:"Imperial Heavy Soldier",132:"Imperial Archer",133:"Imperial Officer",134:"Imperial Sorcerer",135:"Imperial Heavy Sorcerer",136:"Golem (Story)",137:"Fenrir (Story)",138:"Heavens-sent",139:"Earth-sent",140:"Nether-sent",141:"Imperial Commander",142:"Imperial Elite",143:"Imperial Guard",144:"Imperial Master Sorcerer",145:"Imperial General",146:"Imperial Golem",147:"Imperial Omega Golem",148:"The Devourer",149:"The Beast of the Old Times",150:"The Gimmick Golem",151:"The Shadow of the Imperial Army",152:"The Ghost of the Imperial Army",153:"The Phantom of the Imperial Army",154:"The Specter of the Imperial Army",155:"The Wraith of the Imperial Army",156:"The Apparition of the Imperial Army",157:"The Spirit of the Imperial Army",158:"The Poltergeist of the Imperial Army",159:"The Shade of the Imperial Army",160:"The Phantom of the Old Times",161:"The Specter of the Old Times",162:"The Wraith of the Old Times",163:"The Apparition of the Old Times",164:"The Spirit of the Old Times",165:"The Poltergeist of the Old Times",166:"The Shade of the Old Times"};
+        const ENEMIES_DB = {"60010":"Sahagin","60011":"Fenrir","60020":"Mandibuster","60030":"Azure Frog","60031":"Hippogriff","60040":"Lesser Demon","60050":"Rabbit Soldier","60060":"Ancient Golem","60070":"Tutti","60071":"Fruiti","60080":"Spear-Houser","60090":"Ettin","60100":"Bifrost","60101":"Einherjar","60110":"Rhinopede","60111":"Sand Blaster","60112":"Rock Blaster","60120":"Hard-Shelled Rhinox","60121":"Heavy-Armored Rhinox","60130":"Mespede","60140":"Hardshell","60150":"Magmashell","60160":"Ancient Seed","60170":"Tarantulus","60171":"Petit Gargoyle","60180":"Corpse Rider","60190":"Desert Rose","60191":"Tundra Rose","60192":"Volcanic Rose","60200":"Scorpion Assassin","60210":"Rock Golem","60211":"Basalt Golem","60220":"Xibalba","60221":"Garnet Golem","60230":"Assault Tiger","60231":"Yowie","60240":"Siren","60250":"Cockatrice (Adult)","60251":"Yeti","60260":"Lizard","60261":"Soul Reaper","60270":"Gigas","60271":"Sasquatch","60272":"Nidhoggr","60280":"Harpy","60281":"Dark Lurker","60282":"Cave Lurker","60290":"Savage Girl","60291":"Wild Girl","60300":"Pea-Poucher","60310":"Maneater","60311":"Peat Eater","60320":"Mandibuster","60330":"Specter","60340":"Proto-Slinger","60350":"Sandfish","60351":"Feral Girl","60360":"Bean-Poucher","60361":"Ancient Eater","60370":"Desert Crab","60371":"Phantasm","60380":"Dragon Viper","60381":"Slinger","60390":"Seed-Poucher","60391":"Wraith","60400":"Proto-Brawler","60401":"Master-Slinger","60410":"Tyrant Tortoise","60411":"Brawler","60420":"Plantvine","60421":"Titan Slug","60422":"Raging Mandibuster","60430":"Sea Ghost","60431":"Killer Fungus","60432":"Gentle Mandibuster","60440":"Arch-Demon","60441":"Master-Brawler","60450":"Wild Boar","60460":"Hraesvelgr","60470":"Azhdahag","60471":"Proto-Sorcerer","60480":"Proto-Sorcerer","60481":"Sorcerer","60490":"Angry Bat","60491":"Master-Sorcerer","60500":"Gryphon","60501":"Spector (Blue)","60510":"Rabbit Knight","60511":"Spector (Red)","60520":"Snow Boxer","60521":"Spector (Green)","60530":"Spector (Yellow)","60540":"Imperial Soldier","60541":"Imperial Heavy Soldier","60550":"Imperial Archer","60551":"Imperial Officer","60560":"Imperial Sorcerer","60570":"Imperial Heavy Sorcerer","60580":"Golem (Story)","60590":"Fenrir (Story)","60600":"Heavens-sent","60610":"Earth-sent","60620":"Nether-sent","60630":"Imperial Commander","60640":"Imperial Elite","60641":"Imperial Guard","60650":"Imperial Master Sorcerer","60651":"Imperial General","60660":"Imperial Golem","60670":"Imperial Omega Golem","60671":"The Devourer","60680":"The Beast of the Old Times","60690":"Cockatrice (Hatchling)","60691":"Hellflower","60700":"The Gimmick Golem","60701":"The Shadow of the Imperial Army","60710":"The Ghost of the Imperial Army","60711":"The Phantom of the Imperial Army","60712":"The Specter of the Imperial Army","60720":"The Wraith of the Imperial Army","60721":"The Apparition of the Imperial Army","60722":"The Spirit of the Imperial Army","60723":"The Poltergeist of the Imperial Army","60730":"The Shade of the Imperial Army","60740":"The Phantom of the Old Times","60741":"The Specter of the Old Times","60750":"The Wraith of the Old Times","60760":"Earth Dragon","60761":"Balor","60762":"The Apparition of the Old Times","60770":"The Spirit of the Old Times","60780":"Grimeoid","60790":"The Poltergeist of the Old Times","60791":"The Shade of the Old Times","60800":"Abyss Lurker","60810":"Ochre Frog","60820":"Veridian Frog","60821":"Greater Demon","60830":"Rabbit Sergeant","60831":"Rabbit Captain","60832":"Runic Golem","60833":"Omega Golem","60834":"Veggie","60835":"Sword-Houser","60840":"Axe-Houser","60850":"Hell-Armored Rhinox","60860":"Milsede","60870":"Ironshell","60880":"Elder Seed","60890":"Primordial Seed","60900":"Venom Mite","60910":"Paralyzing Mite","60920":"Numbing Mite","60930":"Ironshell","60940":"Ironshell","60980":"Ironshell","70010":"Asta","70020":"Barrow","70030":"Chester","70040":"Seed Conqueror","70050":"Golem","70051":"Fenrir","70052":"Heavens-sent","70060":"Huge Mite","70070":"The Gimmick Golem","70080":"The Phantom of the Imperial Army","70100":"The Wraith of the Imperial Army","70110":"The Phantom of the Old Times","70120":"The Wraith of the Old Times","70130":"The Shade of the Old Times","70150":"Narungarde","70160":"Legatus of the East","70180":"General Dux","81070":"Bear Rider","81080":"Rabbit Mage","81090":"Wyvern","81510":"Carbuncle","81540":"The Final Golem","81550":"The Revenant","81580":"The Ancient Dragon","82101":"Cactus Predator","82102":"Desert Serval","82103":"Remora","82111":"Pawn Demon","82241":"Hellhound","82242":"Pawn Demon","82263":"Pawn Demon"};
 
         // --- LÓGICA DA APLICAÇÃO ---
 
@@ -486,6 +488,7 @@
              switch(tabId) {
                 case 'basic': renderBasicTab(); break;
                 case 'characters': renderCharactersTab(); break;
+                case 'recruitment': renderRecruitmentTab(); break;
                 case 'inventory': renderInventoryTab(); break;
                 case 'storeroom': renderStoreroomTab(); break;
                 case 'runes': renderRunesTab(); break;
@@ -541,7 +544,7 @@
                              <div class="form-group">
                                 <label>Total de Itens no Armazém</label>
                                 <div style="padding: 12px; background: #f8f9fa; border-radius: 6px;">
-                                    ${(gameData._stock?._items || []).length} tipos de itens
+                                    ${(gameData._fortressTown?._itemList || []).length} tipos de itens
                                 </div>
                             </div>
                         </div>
@@ -599,13 +602,13 @@
 
         function renderStoreroomTab() {
             const container = document.getElementById('storeroom');
-            const itemsHTML = (gameData._stock?._items || []).map((item, index) => `
+            const itemsHTML = (gameData._fortressTown?._itemList || []).map((item, index) => `
                 <div class="item-card" data-name="${ALL_ITEMS_DB[item._id] || `ID: ${item._id}`}">
                     <h4>${ALL_ITEMS_DB[item._id] || `ID Desconhecido: ${item._id}`}</h4>
                     <div class="card-content">
                         <div class="form-group">
                             <label>Quantidade</label>
-                            <input type="number" class="form-control" value="${item._count}" data-path="_stock._items.${index}._count" min="0" max="9999">
+                            <input type="number" class="form-control" value="${item._count}" data-path="_fortressTown._itemList.${index}._count" min="0" max="9999">
                         </div>
                         <button class="btn btn-danger" onclick="removeItemFromStoreroom(${index})" style="width: 100%; margin-top: 10px;">🗑️ Remover do Armazém</button>
                     </div>
@@ -673,6 +676,47 @@
                 <input type="text" id="charSearch" class="search-box" placeholder="🔍 Buscar personagem por nome ou ID...">
                 <div class="character-grid">${charsHTML}</div>`;
             document.getElementById('charSearch').addEventListener('keyup', e => filterGrid(e.target.value, '#characters .character-card'));
+        }
+        
+        function renderRecruitmentTab() {
+            const container = document.getElementById('recruitment');
+            
+            const recruitmentChecklistHTML = Object.entries(CHARACTERS_DB).map(([id, name]) => {
+                const unitId = parseInt(id);
+                if (unitId === 10) return ''; // Skip Nowa
+                
+                const isRecruited = isCharacterRecruited(unitId);
+                
+                return `
+                    <div class="checklist-item" data-name="${name.toLowerCase()}">
+                        <div class="label-group">
+                            <input type="checkbox" id="recruit-${unitId}" onchange="toggleRecruitment(${unitId}, this.checked)" ${isRecruited ? 'checked' : ''}>
+                            <label for="recruit-${unitId}">${name}</label>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = `
+                <div class="section">
+                    <div class="section-header">Gerenciar Recrutamento de Heróis</div>
+                    <div class="section-content">
+                        <p>Marque um personagem para recrutá-lo (ele será ativado com stats básicos). Desmarque para dispensá-lo.</p>
+                        <div class="alert alert-warning">
+                            <strong>⚠️ AVISO:</strong> Dispensar um personagem é arriscado e pode quebrar seu save se ele for necessário para a história. Use com cautela!
+                        </div>
+                        <div class="quick-actions" style="margin-top: 20px;">
+                            <button class="btn btn-primary" onclick="recruitAllCharacters()">👥 Recrutar Todos</button>
+                            <button class="btn btn-danger" onclick="dismissAllCharacters()">❌ Dispensar Todos (Arriscado)</button>
+                        </div>
+                        <input type="text" id="recruitSearch" class="search-box" placeholder="🔍 Buscar personagem...">
+                        <div class="checklist-grid" style="max-height: 50vh; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+                            ${recruitmentChecklistHTML}
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('recruitSearch').addEventListener('keyup', e => filterGrid(e.target.value, '#recruitment .checklist-item'));
         }
 
         function renderRunesTab() {
@@ -810,7 +854,6 @@
         function renderMinigamesTab(){
             const container = document.getElementById('minigames');
             
-            // --- Beigoma ---
             const ownedBeigomas = (gameData._inventory?._items || [])
                 .map((item, index) => ({ ...item, originalIndex: index }))
                 .filter(item => BEIGOMA_DB[item._id]);
@@ -824,7 +867,6 @@
                 </div>
             `).join('') : '<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted);">Nenhum Beigoma encontrado no seu inventário.</p>';
 
-            // --- Combos ---
             const combosHTML = (gameData._battleRecord?._usedHeroCombos?._counters || []).map((combo, index) => `
                 <div class="item-card">
                      <div class="card-content">
@@ -836,7 +878,6 @@
                     </div>
                 </div>`).join('');
                 
-            // --- Pesca ---
             const fishRegistryHTML = (gameData._fishesRegistrations || []).map((fish, index) => `
                  <div class="item-card">
                      <div class="card-content">
@@ -848,17 +889,17 @@
                  </div>
             `).join('');
             
-            // --- Enciclopédia ---
+            // --- Lógica da Enciclopédia ---
             const defeatedEnemyMap = new Map((gameData._battleRecord?._defeatedEnemy?._counters || []).map(e => [e._key, e._value]));
-            const enemyChecklistHTML = Object.entries(ENEMIES_DB).map(([id, name]) => {
+            const enemyChecklistHTML = Object.entries(ENEMIES_DB).sort(([, nameA], [, nameB]) => nameA.localeCompare(nameB)).map(([id, name]) => {
                 const enemyId = parseInt(id);
-                const isDefeated = defeatedEnemyMap.has(enemyId);
+                const isDefeated = defeatedEnemyMap.has(enemyId) && defeatedEnemyMap.get(enemyId) > 0;
                 const defeatCount = defeatedEnemyMap.get(enemyId) || 0;
                 return `
-                    <div class="checklist-item" data-name="${name.toLowerCase()}">
+                    <div class="checklist-item" data-name="${name.toLowerCase()} ${enemyId}">
                         <div class="label-group">
                             <input type="checkbox" id="enemy-${enemyId}" onchange="toggleEnemyDefeated(${enemyId}, this.checked)" ${isDefeated ? 'checked' : ''}>
-                            <label for="enemy-${enemyId}">${name}</label>
+                            <label for="enemy-${enemyId}">${name} <small style="color: #888;">(ID: ${enemyId})</small></label>
                         </div>
                         <input type="number" class="form-control" value="${defeatCount}" onchange="updateEnemyDefeatCount(${enemyId}, this.value)" onkeyup="updateEnemyDefeatCount(${enemyId}, this.value)">
                     </div>
@@ -866,13 +907,13 @@
             }).join('');
 
 
-            // --- Cozinha ---
+            // --- Lógica da Cozinha ---
             const cookedRecipeIds = new Set(gameData._cookingRecord?._cookedRecipeIds || []);
-            const cookingChecklistHTML = Object.entries(RECIPES_DB).map(([id, name]) => {
+            const cookingChecklistHTML = Object.entries(RECIPES_DB).sort(([, nameA], [, nameB]) => nameA.localeCompare(nameB)).map(([id, name]) => {
                 const recipeId = parseInt(id);
                 const isChecked = cookedRecipeIds.has(recipeId);
                 return `
-                    <div class="checklist-item">
+                    <div class="checklist-item" data-name="${name.toLowerCase()}">
                         <div class="label-group">
                              <input type="checkbox" id="recipe-${recipeId}" onchange="toggleCookedStatus(${recipeId}, this.checked)" ${isChecked ? 'checked' : ''}>
                             <label for="recipe-${recipeId}">${name.replace(' Recipe', '')}</label>
@@ -885,10 +926,12 @@
                  <div class="section">
                     <div class="section-header">🍳 Cozinha & Refeições</div>
                     <div class="section-content">
+                        <p>Marque as receitas que você já cozinhou para completar o registro.</p>
                         <div class="quick-actions">
                             <button class="btn btn-primary" onclick="cookAllRecipes()">🧑‍🍳 Marcar Todos como Cozidos</button>
                             <button class="btn btn-danger" onclick="clearCookingRecords()">🧼 Limpar Registros da Cozinha</button>
                         </div>
+                        <input type="text" id="recipeSearch" class="search-box" placeholder="🔍 Buscar receita...">
                         <div class="checklist-grid" style="max-height: 400px; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));">
                             ${cookingChecklistHTML}
                         </div>
@@ -910,7 +953,7 @@
                             <div class="form-group"><label for="addFishId">ID do Peixe</label><input type="number" id="addFishId" class="form-control"></div>
                             <div class="form-group"><label for="addFishSpotId">ID do Local</label><input type="number" id="addFishSpotId" class="form-control"></div>
                             <div class="form-group"><label for="addFishCount">Quantidade</label><input type="number" id="addFishCount" value="1" min="1" class="form-control"></div>
-                            <button class="btn btn-success" onclick="addFishToRegistry()">+ Adicionar</button>
+                            <button class="btn btn-success" onclick="addFishToRegistryManual()">+ Adicionar</button>
                         </div>
                         <hr style="margin: 20px 0;">
                         <h4>Registro de Peixes Capturados</h4>
@@ -940,15 +983,15 @@
                 </div>
                 
                 <div class="section">
-                    <div class="section-header">📖 Enciclopédia de Inimigos (Registro de Batalha)</div>
+                    <div class="section-header">📖 Enciclopédia de Inimigos e Chefes</div>
                      <div class="section-content">
-                        <p>A enciclopédia é baseada nos inimigos que você já derrotou. Marque para adicionar um inimigo à lista de derrotados (com 1 derrota) ou edite a contagem diretamente.</p>
+                        <p>Marque os inimigos e chefes que você derrotou. A contagem de derrotas será definida como 1 se for marcada. Você também pode editar a contagem manualmente.</p>
                         <div class="quick-actions" style="margin-top: 20px;">
-                            <button class="btn btn-primary" onclick="unlockAllEnemies()">📖 Registrar Todos os 166 Inimigos</button>
+                            <button class="btn btn-primary" onclick="unlockAllEnemies()">📖 Registrar Todos os Inimigos</button>
                             <button class="btn btn-danger" onclick="clearEnemyBook()">🗑️ Limpar Registros de Batalha</button>
                         </div>
-                         <input type="text" id="enemySearch" class="search-box" placeholder="🔍 Buscar inimigo...">
-                        <div class="checklist-grid" style="max-height: 400px; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));">
+                         <input type="text" id="enemySearch" class="search-box" placeholder="🔍 Buscar inimigo por nome ou ID...">
+                        <div class="checklist-grid" style="max-height: 400px; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));">
                             ${enemyChecklistHTML}
                         </div>
                     </div>
@@ -976,7 +1019,8 @@
                     </div>
                 </div>
             `;
-            document.getElementById('enemySearch').addEventListener('keyup', e => filterGrid(e.target.value, '#minigames .checklist-item'));
+            document.getElementById('enemySearch').addEventListener('keyup', e => filterGrid(e.target.value, '#minigames .checklist-item[data-name]'));
+            document.getElementById('recipeSearch').addEventListener('keyup', e => filterGrid(e.target.value, '#minigames .checklist-item[data-name]'));
         }
 
         function renderAdvancedTab() {
@@ -1010,9 +1054,9 @@
             let maxCount = 999;
 
             if (destination === 'storeroom') {
-                if (!gameData._stock) gameData._stock = { _items: [] };
-                if (!gameData._stock._items) gameData._stock._items = [];
-                targetList = gameData._stock._items;
+                if (!gameData._fortressTown) gameData._fortressTown = { _itemList: [] };
+                if (!gameData._fortressTown._itemList) gameData._fortressTown._itemList = [];
+                targetList = gameData._fortressTown._itemList;
                 maxCount = 9999;
             } else {
                 if (!gameData._inventory) gameData._inventory = { _items: [] };
@@ -1022,23 +1066,22 @@
 
             const existingItem = targetList.find(i => i._id === itemId);
             if (existingItem) {
-                existingItem._count = Math.min(maxCount, existingItem._count + quantity);
+                existingItem._count = Math.min(maxCount, (existingItem._count || 0) + quantity);
             } else {
-                targetList.push({ _id: itemId, _count: quantity, _max: maxCount });
+                 const itemBlueprint = { _id: itemId, _count: quantity };
+                 const itemFromDb = ALL_ITEMS_DB[itemId];
+                 if (itemFromDb) {
+                    itemBlueprint._max = maxCount;
+                 }
+                targetList.push(itemBlueprint);
             }
         }
         
         // --- FUNÇÕES DE CONVENIÊNCIA ---
 
         function setMaxMoney() {
-            document.getElementById('money').value = 9999999;
+            document.getElementById('money').value = 99999999;
             showStatus('Dinheiro definido para o máximo!', 'success');
-        }
-
-        function addPlayTime() {
-            const currentSeconds = parseInt(document.getElementById('seconds').value) || 0;
-            document.getElementById('seconds').value = currentSeconds + 36000; // +10 horas
-            showStatus('10 horas adicionadas ao tempo de jogo!', 'success');
         }
         
         function removeItem(index) {
@@ -1051,7 +1094,7 @@
         
         function removeItemFromStoreroom(index) {
              if (confirm('Tem certeza que deseja remover este item do armazém?')) {
-                gameData._stock._items.splice(index, 1);
+                gameData._fortressTown._itemList.splice(index, 1);
                 showStatus('Item removido do armazém!', 'success');
                 renderStoreroomTab();
             }
@@ -1098,39 +1141,35 @@
             }
         }
 
-        // Personagens
         function maxCharacter(charIndex) {
             if (!gameData._unitData?._units?.[charIndex]) return;
             const char = gameData._unitData._units[charIndex];
             
-            char._hp = 9999;
-            char._mp = 999;
-            char._exp = 999999;
-            char._weaponLevel = 99;
+            char._exp = 98000;
+            char._weaponLevel = 15;
             
             renderCharactersTab(); 
-            showStatus(`${CHARACTERS_DB[char._id]} maximizado!`, 'success');
+            showStatus(`${CHARACTERS_DB[char._id]} maximizado! (EXP: 98000, Arma: 15)`, 'success');
         }
 
         function maxAllCharacters() {
             if (!gameData._unitData?._units) return;
             gameData._unitData._units.forEach((unit, index) => {
                 if (unit._exp > 0 || unit._hp > 0) {
-                     gameData._unitData._units[index]._hp = 9999;
-                     gameData._unitData._units[index]._mp = 999;
-                     gameData._unitData._units[index]._exp = 999999;
-                     gameData._unitData._units[index]._weaponLevel = 99;
+                     gameData._unitData._units[index]._exp = 98000;
+                     gameData._unitData._units[index]._weaponLevel = 15;
                 }
             });
             renderCharactersTab();
-            showStatus('Todos os personagens foram maximizados!', 'success');
+            showStatus('Todos os personagens foram maximizados! (EXP: 98000, Arma: 15)', 'success');
         }
 
-        // Itens e Desbloqueios
         function addItemsFromDb(db, quantity, successMessage, destination = 'inventory') {
             Object.keys(db).forEach(id => {
                 const itemId = parseInt(id);
-                addItem(itemId, quantity, destination);
+                if (itemId !== 0) {
+                    addItem(itemId, quantity, destination);
+                }
             });
             const destText = destination === 'inventory' ? 'Inventário' : 'Armazém';
             showStatus(successMessage + ` para o ${destText}!`, 'success');
@@ -1186,10 +1225,17 @@
             if (isChecked) {
                 if (enemyIndex === -1) { 
                     gameData._battleRecord._defeatedEnemy._counters.push({ _key: enemyId, _value: 1, _newFlag: true });
+                } else {
+                    if (gameData._battleRecord._defeatedEnemy._counters[enemyIndex]._value === 0) {
+                        gameData._battleRecord._defeatedEnemy._counters[enemyIndex]._value = 1;
+                    }
                 }
             } else {
                 if (enemyIndex !== -1) {
-                    gameData._battleRecord._defeatedEnemy._counters.splice(enemyIndex, 1);
+                    gameData._battleRecord._defeatedEnemy._counters[enemyIndex]._value = 0;
+                } else {
+                    // Adiciona com 0 se não existir, para manter o registro de "não derrotado"
+                    gameData._battleRecord._defeatedEnemy._counters.push({ _key: enemyId, _value: 0, _newFlag: true });
                 }
             }
             renderMinigamesTab();
@@ -1202,29 +1248,30 @@
 
             let enemy = gameData._battleRecord._defeatedEnemy._counters.find(e => e._key === enemyId);
             if (enemy) {
-                enemy._value = count;
-                if (count === 0) { // Se zerar, remover da lista
-                     toggleEnemyDefeated(enemyId, false);
-                }
+                enemy._value = Math.max(0, count);
             } else if (count > 0) {
                  gameData._battleRecord._defeatedEnemy._counters.push({ _key: enemyId, _value: count, _newFlag: true });
-                 renderMinigamesTab();
             }
+            renderMinigamesTab();
         }
-
+        
         function unlockAllEnemies() {
+            if (!confirm("Isso marcará todos os inimigos da lista como derrotados (com contagem 1). Deseja continuar?")) return;
             ensureBattleRecords();
             const allEnemyIds = Object.keys(ENEMIES_DB).map(id => parseInt(id));
-            const existingEnemyIds = new Set(gameData._battleRecord._defeatedEnemy._counters.map(e => e._key));
+            const defeatedMap = new Map(gameData._battleRecord._defeatedEnemy._counters.map(e => [e._key, e]));
 
             allEnemyIds.forEach(id => {
-                if (!existingEnemyIds.has(id)) {
+                const enemy = defeatedMap.get(id);
+                if (!enemy) {
                     gameData._battleRecord._defeatedEnemy._counters.push({ _key: id, _value: 1, _newFlag: true });
+                } else {
+                    if(enemy._value === 0) enemy._value = 1;
                 }
             });
             
             renderMinigamesTab();
-            showStatus('Todos os 166 inimigos foram registrados na enciclopédia.', 'success');
+            showStatus('Todos os inimigos foram registrados na enciclopédia.', 'success');
         }
 
         function clearEnemyBook() {
@@ -1250,12 +1297,13 @@
             }
             
             gameData._cookingRecord._cookedRecipeIds = [...recipeSet].sort((a,b) => a - b);
+            renderMinigamesTab();
         }
         
         function cookAllRecipes() {
             if (!gameData._cookingRecord) gameData._cookingRecord = { _cookedRecipeIds: [] };
             const allRecipeIds = Object.keys(RECIPES_DB).map(id => parseInt(id));
-            gameData._cookingRecord._cookedRecipeIds = allRecipeIds;
+            gameData._cookingRecord._cookedRecipeIds = [...new Set([...gameData._cookingRecord._cookedRecipeIds, ...allRecipeIds])].sort((a,b) => a - b);
             renderMinigamesTab();
             showStatus('Todas as receitas foram marcadas como cozidas.', 'success');
         }
@@ -1280,22 +1328,31 @@
         }
 
         function maxFortressResources() {
-            if (!gameData._fortressTown?._itemList) return;
+            if (!gameData._fortressTown?._itemList) {
+                gameData._fortressTown = { _itemList: [] };
+            };
 
-            const resourceIds = [50001, 50002, 50003, 50004]; // Food, Lumber, Stone, Pelt
-            gameData._fortressTown._itemList.forEach(item => {
-                if (resourceIds.includes(item._id)) {
-                    item._count = item._max || 2000;
+            const resourceIds = [50001, 50002, 50003, 50004];
+            const existingResources = new Map(gameData._fortressTown._itemList.map(item => [item._id, item]));
+
+            resourceIds.forEach(id => {
+                if (existingResources.has(id)) {
+                    existingResources.get(id)._count = 9999;
+                } else {
+                    gameData._fortressTown._itemList.push({_id: id, _count: 9999, _max: 9999});
                 }
             });
+
             showStatus('Recursos do QG maximizados!', 'success');
         }
 
         function openAlmostAllChests() {
              if(confirm("Isso marcará todos os baús da lista como abertos. Deseja continuar?")) {
-                if(gameData._fieldAction?._treasureChestList) {
-                    gameData._fieldAction._treasureChestList._opened = [...new Set([...gameData._fieldAction._treasureChestList._opened, ...ALL_CHEST_IDS])];
-                }
+                if(!gameData._fieldAction) gameData._fieldAction = {};
+                if(!gameData._fieldAction._treasureChestList) gameData._fieldAction._treasureChestList = { _opened: [] };
+                
+                gameData._fieldAction._treasureChestList._opened = [...new Set([...gameData._fieldAction._treasureChestList._opened, ...ALL_CHEST_IDS])];
+                
                 renderFortressTab();
                 showStatus('Quase todos os baús foram marcados como abertos.', 'success');
             }
@@ -1307,7 +1364,7 @@
                     gameData._fieldAction._treasureChestList._opened = [];
                 }
                 if(gameData._fieldAction?._largeTreasureChestList) {
-                    gameData._fieldAction._largeTreasureChestList._opened = [];
+                    gameData._fieldAction._largeTreasureChestList = {};
                 }
                 renderFortressTab();
                 showStatus('Todos os baús foram fechados no save.', 'success');
@@ -1401,7 +1458,7 @@
             }
         }
 
-        function addFishToRegistry() {
+        function addFishToRegistryManual() {
             const fishId = parseInt(document.getElementById('addFishId').value);
             const spotId = parseInt(document.getElementById('addFishSpotId').value);
             const count = parseInt(document.getElementById('addFishCount').value);
@@ -1436,8 +1493,63 @@
                 }
             }
         }
+        
+        // --- FUNÇÕES DE RECRUTAMENTO ---
+        function isCharacterRecruited(unitId) {
+            const unit = gameData._unitData._units.find(u => u._id === unitId);
+            return unit && (unit._hp > 0 || unit._exp > 0);
+        }
 
-        // Funções do Editor Avançado
+        function toggleRecruitment(unitId, isRecruiting) {
+            const unit = gameData._unitData._units.find(u => u._id === unitId);
+            if (!unit) return;
+
+            const detectiveInfo = gameData._detectiveData?._unitInfos?.find(u => u._unitId === unitId);
+
+            if (isRecruiting) {
+                if (unit._hp === 0 && unit._exp === 0) { // Only recruit if not already active
+                    unit._hp = 100;
+                    unit._mp = 50;
+                    unit._exp = 1;
+                    unit._weaponLevel = 1;
+                    if (detectiveInfo) detectiveInfo._haveMet = true;
+                }
+            } else { // Dispensing
+                unit._hp = 0;
+                unit._mp = 0;
+                unit._exp = 0;
+                unit._weaponLevel = 0;
+                unit._equipment = [];
+                unit._runeHoles = [];
+            }
+            renderRecruitmentTab();
+        }
+
+        function recruitAllCharacters() {
+            if (!confirm("Isso irá recrutar todos os personagens que ainda não estão no seu time. Deseja continuar?")) return;
+            Object.keys(CHARACTERS_DB).forEach(idStr => {
+                const id = parseInt(idStr);
+                if (!isCharacterRecruited(id)) {
+                    toggleRecruitment(id, true);
+                }
+            });
+            showStatus("Todos os personagens foram recrutados!", "success");
+            renderRecruitmentTab();
+        }
+
+        function dismissAllCharacters() {
+            if (!confirm("⚠️ AVISO DE RISCO! Dispensar todos pode quebrar seu save. Você só deve fazer isso para experimentação em um save separado. Deseja continuar mesmo assim?")) return;
+            Object.keys(CHARACTERS_DB).forEach(idStr => {
+                const id = parseInt(idStr);
+                if (id !== 10) { // Don't dismiss Nowa
+                    toggleRecruitment(id, false);
+                }
+            });
+            showStatus("Todos os personagens (exceto Nowa) foram dispensados.", "warning");
+            renderRecruitmentTab();
+        }
+
+
         function formatJson() {
             const editor = document.getElementById('rawJsonEditor');
             try {
