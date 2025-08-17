@@ -1,0 +1,900 @@
+# -*- coding: utf-8 -*-
+"""
+App Unificado (Tkinter)
+- Aba "Pacotes": Unpack/Pack no estilo QuickBMS (analisar, extrair, empacotar)
+- Aba "Textos": Ferramenta MSG (Dump/Insert) + Editor embutido para carregar/editar .txt
+
+Baseado e conciliado a partir de dois scripts enviados pelo usuário.
+
+Requisitos: Python 3.x e Tkinter (padrão).
+
+Extras desta revisão:
+- Correção de SyntaxError em f-strings com quebras de linha.
+- Pequena suíte de testes (execute com `--selftest`) para funções puras.
+"""
+import os
+import sys
+import struct
+import shutil
+import threading
+import tkinter as tk
+from tkinter import ttk, filedialog, messagebox
+from tkinter.scrolledtext import ScrolledText
+
+# ===============================
+# Configurações / Constantes
+# ===============================
+ORIG_SCRIPT_DIR = "scripts_originais"
+TRANS_SCRIPT_DIR = "scripts_traduzidos"
+TABLE_FILENAME = "tabela.tbl"
+EXPECTED_MAGIC_1 = 0x4556454C  # "LEVE"
+
+# ===============================
+# Utilitários
+# ===============================
+
+def open_folder(path: str):
+    if not path or not os.path.isdir(path):
+        return
+    try:
+        if sys.platform.startswith('win'):
+            os.startfile(path)  # type: ignore[attr-defined]
+        elif sys.platform == 'darwin':
+            __import__('subprocess').run(['open', path], check=False)
+        else:
+            __import__('subprocess').run(['xdg-open', path], check=False)
+    except Exception:
+        pass
+
+
+def safe_set(widget, text: str):
+    """Atualiza StringVar/Label de forma segura em qualquer thread."""
+    try:
+        if isinstance(widget, tk.StringVar):
+            widget.set(text)
+        else:
+            widget.configure(text=text)
+    except tk.TclError:
+        pass
+
+
+def update_log(text_widget: ScrolledText, msg: str):
+    if not text_widget:
+        return
+    try:
+        text_widget.configure(state=tk.NORMAL)
+        text_widget.insert(tk.END, msg + "\n")
+        text_widget.see(tk.END)
+        text_widget.configure(state=tk.DISABLED)
+        text_widget.update_idletasks()
+    except tk.TclError:
+        pass
+
+
+# ===============================
+# Núcleo: Tabela / Codec
+# ===============================
+
+def load_table(table_path: str, status_widget: ScrolledText = None):
+    """Carrega a .tbl -> mapeamentos byte<->char. Fallback latin-1.
+    Garante 0x20 <-> ' '."""
+    byte_to_char = {}
+    char_to_byte = {}
+    table_loaded = False
+
+    try:
+        with open(table_path, 'r', encoding='utf-8') as f:
+            update_log(status_widget, f"Carregando tabela de caracteres: {table_path}")
+            for line in f:
+                line = line.strip()
+                if not line or '=' not in line:
+                    continue
+                left, right = line.split('=', 1)
+                try:
+                    bval = int(left, 16)
+                    byte_to_char[bval] = right
+                    if len(right) == 1 or (right.startswith('{') and right.endswith('}')):
+                        char_to_byte[right] = bval
+                except ValueError:
+                    update_log(status_widget, f"Aviso: hex inválido '{left}' na tabela. Ignorando.")
+            table_loaded = True if byte_to_char else False
+            if not table_loaded:
+                update_log(status_widget, f"Aviso: tabela vazia/inegível: {table_path}")
+    except Exception as e:
+        update_log(status_widget, f"Aviso: erro ao ler tabela {table_path}: {e}. Usando latin-1.")
+        table_loaded = False
+
+    if not table_loaded:
+        # fallback latin-1
+        byte_to_char = {}
+        char_to_byte = {}
+        for i in range(256):
+            try:
+                ch = bytes([i]).decode('latin-1')
+                if ch.isprintable():
+                    byte_to_char[i] = ch
+                    if ch not in char_to_byte:
+                        char_to_byte[ch] = i
+                elif i == 0x00:
+                    byte_to_char[i] = "{00}"
+                elif ch == '\n':
+                    byte_to_char[i] = '\n'; char_to_byte['\n'] = i
+                else:
+                    byte_to_char[i] = f"{{{i:02x}}}"
+            except Exception:
+                byte_to_char[i] = f"{{{i:02x}}}"
+
+    update_log(status_widget, "Ajuste fixo: 0x20 <-> ' '")
+    byte_to_char[0x20] = ' '
+    char_to_byte[' '] = 0x20
+    if 0x00 not in byte_to_char:
+        byte_to_char[0x00] = "{00}"
+
+    return byte_to_char, char_to_byte
+
+
+def contador_bytes(buf: bytes, start_off: int, end_off: int) -> int:
+    """Conta bytes até 0x00 (inclusão de limite)."""
+    count = 0
+    cur = start_off
+    if start_off >= len(buf):
+        return 0
+    while cur < end_off and cur < len(buf):
+        if buf[cur] == 0x00:
+            break
+        count += 1
+        cur += 1
+    return count
+
+
+# ===============================
+# Núcleo: Dump / Insert
+# ===============================
+
+def dumper_logic(msg_path: str, table_path: str, status_widget: ScrolledText, editor: ScrolledText = None):
+    """Extrai e decodifica o bloco de texto do .msg -> grava em scripts_originais/<nome>.msg.txt
+    Também (opcional) carrega no editor ao final."""
+    update_log(status_widget, f"Iniciando dump: {msg_path}")
+    try:
+        b2c, _ = load_table(table_path, status_widget)
+        os.makedirs(ORIG_SCRIPT_DIR, exist_ok=True)
+        out_txt = os.path.join(ORIG_SCRIPT_DIR, os.path.basename(msg_path) + ".txt")
+
+        with open(msg_path, 'rb') as f:
+            f.seek(0, os.SEEK_END)
+            total = f.tell()
+            update_log(status_widget, f"Tamanho do arquivo: {total} bytes (0x{total:X})")
+            f.seek(0x08)
+            magic = struct.unpack('<I', f.read(4))[0]
+
+            if magic == EXPECTED_MAGIC_1:
+                update_log(status_widget, f"Magic 0x{magic:X} (LEVE)")
+                f.seek(0x20)
+                entries = struct.unpack('<I', f.read(4))[0]
+                table_offset = struct.unpack('<I', f.read(4))[0]
+                ptr_table_off = 0x2C
+            else:
+                update_log(status_widget, f"Magic 0x{magic:X} (Desconhecido)")
+                f.seek(0x04)
+                entries = struct.unpack('<I', f.read(4))[0]
+                table_offset = struct.unpack('<I', f.read(4))[0]
+                ptr_table_off = 0x10
+
+            f.seek(-2, os.SEEK_END)
+            end_marker = struct.unpack('<h', f.read(2))[0]
+            if end_marker == 0x0000:
+                text_start = total - table_offset - 2
+                update_log(status_widget, "Marcador final 0x0000 encontrado. Offset ajustado.")
+            else:
+                text_start = total - table_offset
+                update_log(status_widget, "Sem 0x0000 final. Offset padrão.")
+
+            f.seek(text_start)
+            data = f.read()
+
+        dialogs = 0
+        with open(out_txt, 'w', encoding='utf-8') as out:
+            update_log(status_widget, f"Gravando texto em: {out_txt}")
+            buf = []
+            for b in data:
+                if b == 0x00:
+                    dialogs += 1
+                    size = len(''.join(buf))
+                    out.write(f"Diálogo {dialogs} - tamanho: {size}\n")
+                    out.write(''.join(buf))
+                    out.write("{00}\n------------\n")
+                    buf = []
+                else:
+                    out.append if False else None  # só para clareza
+                    ch = b2c.get(b, f"{{{b:02x}}}")
+                    buf.append(ch)
+        update_log(status_widget, f"Dump concluído! {dialogs} diálogos.")
+
+        # Carrega no editor, se houver
+        if editor is not None:
+            try:
+                editor.configure(state=tk.NORMAL)
+                editor.delete('1.0', tk.END)
+                with open(out_txt, 'r', encoding='utf-8') as f:
+                    editor.insert('1.0', f.read())
+                editor.mark_set("insert", "1.0")
+                editor.focus_set()
+                editor.configure(state=tk.NORMAL)
+            except Exception:
+                pass
+
+    except Exception as e:
+        update_log(status_widget, f"ERRO: {e}")
+        messagebox.showerror("Dump - Erro", f"Ocorreu um erro no dump:\n{e}")
+
+
+def _calc_ptrs(msg_path: str, text_block_start: int, final_text_end: int, ptr_table_start: int, status_widget: ScrolledText):
+    """Recalcula e grava ponteiros (offset/len 16-bit) até alcançar o fim do bloco de texto."""
+    update_log(status_widget, "Recalculando ponteiros...")
+    try:
+        with open(msg_path, 'r+b') as f:
+            f.seek(0, os.SEEK_END)
+            size = f.tell()
+            update_log(status_widget, f"Tamanho: 0x{size:X}")
+            f.seek(0)
+            data = bytearray(f.read(max(size, text_block_start)))
+
+            off = text_block_start
+            ptr = ptr_table_start
+            cumul = 0
+            count = 0
+            while ptr < text_block_start:
+                ln = contador_bytes(data, off, len(data)) + 1
+                o16 = min(cumul, 0xFFFF)
+                l16 = min(ln, 0xFFFF)
+                f.seek(ptr)
+                f.write(struct.pack('<H', o16))
+                f.write(struct.pack('<H', l16))
+                count += 1
+                cumul += ln
+                off += ln
+                ptr += 8
+                if off > final_text_end + 100:
+                    break
+            update_log(status_widget, f"Ponteiros atualizados: {count}")
+    except Exception as e:
+        update_log(status_widget, f"ERRO ponteiros: {e}")
+        messagebox.showerror("Erro de Ponteiros", f"Falha no recálculo de ponteiros:\n{e}")
+        raise
+
+
+def _write_encoded_text_to_msg(msg_path: str, table_path: str, text_source: str, status_widget: ScrolledText):
+    """Codifica o conteúdo (em formato de linhas do .txt) e grava no bloco de texto do .msg, encerrando cada linha com 0x00.
+    text_source = conteúdo já carregado (string)."""
+    _, c2b = load_table(table_path, status_widget)
+
+    # Determina início do bloco original
+    with open(msg_path, 'rb') as f:
+        f.seek(0, os.SEEK_END)
+        tot = f.tell()
+        f.seek(0x08)
+        mag = struct.unpack('<I', f.read(4))[0]
+        if mag == EXPECTED_MAGIC_1:
+            f.seek(0x24)
+            tbl = struct.unpack('<I', f.read(4))[0]
+            ptr_off = 0x2C
+        else:
+            f.seek(0x08)
+            tbl = struct.unpack('<I', f.read(4))[0]
+            ptr_off = 0x10
+        f.seek(-2, os.SEEK_END)
+        orig_start = tot - tbl - (2 if struct.unpack('<h', f.read(2))[0] == 0x0000 else 0)
+
+    def iter_lines_for_insert(text: str):
+        """Gera linhas válidas para inserção (ignora cabeçalhos 'Diálogo' e separadores)."""
+        for line in text.splitlines():
+            if line.startswith('Diálogo'):
+                continue
+            if line.strip() == '------------':
+                continue
+            yield line.rstrip('\n')
+
+    # Escreve novo texto
+    with open(msg_path, 'r+b') as out:
+        out.seek(orig_start)
+        bw = 0
+        for line in iter_lines_for_insert(text_source):
+            i = 0
+            L = len(line)
+            while i < L:
+                ch = line[i]
+                if ch == '{':
+                    j = line.find('}', i + 1)
+                    if j != -1:
+                        code = line[i+1:j]
+                        try:
+                            out.write(struct.pack('<B', int(code, 16)))
+                            bw += 1
+                        except Exception:
+                            pass
+                        i = j + 1
+                        continue
+                b = c2b.get(ch)
+                if b is not None:
+                    out.write(struct.pack('<B', b))
+                    bw += 1
+                i += 1
+            out.write(b"\x00")
+            bw += 1
+        end_off = out.tell()
+
+    _calc_ptrs(msg_path, orig_start, end_off, ptr_off, status_widget)
+    update_log(status_widget, "Inserção finalizada e ponteiros atualizados!")
+
+
+def inserter_logic_from_file(msg_path: str, table_path: str, status_widget: ScrolledText):
+    """Mantém compatibilidade: lê TRANS_SCRIPT_DIR/<msg>.txt e insere."""
+    txt_path = os.path.join(TRANS_SCRIPT_DIR, os.path.basename(msg_path) + ".txt")
+    if not os.path.exists(txt_path):
+        raise FileNotFoundError(f"Script traduzido não encontrado: {txt_path}")
+    with open(txt_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+    _write_encoded_text_to_msg(msg_path, table_path, content, status_widget)
+
+
+# ===============================
+# UI: Aba de Pacotes (Unpack/Pack)
+# ===============================
+class PackTab(ttk.Frame):
+    PATTERN = struct.pack('<I', 0xFA7FD1A4)
+
+    def __init__(self, master):
+        super().__init__(master)
+        self.src_var = tk.StringVar()
+        self.out_prefix_var = tk.StringVar(value="output")
+        self.pack_folder_var = tk.StringVar()
+        self.pack_out_var = tk.StringVar()
+        self.status_var = tk.StringVar(value="Pronto")
+        self.entries = []  # lista de dicts: name, offset, size
+        self.current_output_dir = None
+        self._build()
+
+    def _build(self):
+        # Seleção fonte
+        f_src = ttk.LabelFrame(self, text="Arquivo de Origem", padding=8)
+        f_src.pack(fill=tk.X, pady=(0, 6))
+        ttk.Entry(f_src, textvariable=self.src_var).pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 6))
+        ttk.Button(f_src, text="Procurar...", command=self._browse_src).pack(side=tk.LEFT)
+
+        # Prefixo pasta saída
+        f_pref = ttk.LabelFrame(self, text="Prefixo da Pasta de Saída", padding=8)
+        f_pref.pack(fill=tk.X, pady=6)
+        ttk.Entry(f_pref, textvariable=self.out_prefix_var, width=28).pack(side=tk.LEFT, padx=(0, 6))
+        ttk.Button(f_pref, text="Abrir Pasta de Saída", command=self._open_output).pack(side=tk.LEFT)
+
+        # Botões
+        f_btns = ttk.Frame(self)
+        f_btns.pack(fill=tk.X, pady=6)
+        ttk.Button(f_btns, text="Analisar Entradas", command=self._analyze).pack(side=tk.LEFT)
+        ttk.Button(f_btns, text="Extrair Tudo", command=self._start_extract).pack(side=tk.LEFT, padx=6)
+
+        # Tabela
+        f_tree = ttk.LabelFrame(self, text="Entradas", padding=8)
+        f_tree.pack(fill=tk.BOTH, expand=True, pady=6)
+        cols = ("#", "Nome", "Offset", "Tamanho", "Caminho")
+        self.tree = ttk.Treeview(f_tree, columns=cols, show='headings')
+        headings = [('#', 60, 'center'), ('Nome', 250, 'w'), ('Offset', 100, 'center'), ('Tamanho', 120, 'e'), ('Caminho', 380, 'w')]
+        for col, width, anchor in headings:
+            self.tree.heading(col, text=col)
+            self.tree.column(col, width=width, anchor=anchor)
+        ysb = ttk.Scrollbar(f_tree, orient=tk.VERTICAL, command=self.tree.yview)
+        xsb = ttk.Scrollbar(f_tree, orient=tk.HORIZONTAL, command=self.tree.xview)
+        self.tree.configure(yscroll=ysb.set, xscroll=xsb.set)
+        self.tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        ysb.pack(side=tk.RIGHT, fill=tk.Y)
+        xsb.pack(side=tk.BOTTOM, fill=tk.X)
+
+        # Empacotar
+        f_pack = ttk.LabelFrame(self, text="Reempacotar", padding=8)
+        f_pack.pack(fill=tk.X, pady=6)
+        # Pasta extraída
+        g1 = ttk.Frame(f_pack); g1.pack(fill=tk.X, pady=3)
+        ttk.Label(g1, text="Pasta Extraída:").pack(side=tk.LEFT)
+        ttk.Entry(g1, textvariable=self.pack_folder_var).pack(side=tk.LEFT, fill=tk.X, expand=True, padx=6)
+        ttk.Button(g1, text="Procurar...", command=self._browse_pack_folder).pack(side=tk.LEFT)
+        # Arquivo de saída
+        g2 = ttk.Frame(f_pack); g2.pack(fill=tk.X, pady=3)
+        ttk.Label(g2, text="Arquivo de Saída:").pack(side=tk.LEFT)
+        ttk.Entry(g2, textvariable=self.pack_out_var, width=46).pack(side=tk.LEFT, fill=tk.X, expand=True, padx=6)
+        ttk.Button(g2, text="Salvar como...", command=self._browse_pack_out).pack(side=tk.LEFT)
+        # Botão pack
+        ttk.Button(f_pack, text="Empacotar Arquivos", command=self._start_pack).pack(side=tk.LEFT, padx=0, pady=(4,0))
+
+        # Status
+        f_status = ttk.Frame(self)
+        f_status.pack(fill=tk.X, pady=(6, 0))
+        ttk.Label(f_status, textvariable=self.status_var).pack(side=tk.LEFT)
+        self.progress = ttk.Progressbar(f_status, orient='horizontal', length=220, mode='determinate')
+        self.progress.pack(side=tk.RIGHT)
+
+    # ---- Callbacks
+    def _browse_src(self):
+        p = filedialog.askopenfilename(title='Selecionar arquivo', filetypes=[('Todos', '*.*')])
+        if p:
+            self.src_var.set(p)
+
+    def _browse_pack_folder(self):
+        d = filedialog.askdirectory(title='Selecionar pasta extraída')
+        if d:
+            self.pack_folder_var.set(d)
+
+    def _browse_pack_out(self):
+        p = filedialog.asksaveasfilename(defaultextension='.bin', filetypes=[('BIN', '*.bin'), ('Todos', '*.*')])
+        if p:
+            self.pack_out_var.set(p)
+
+    def _open_output(self):
+        if self.current_output_dir:
+            open_folder(self.current_output_dir)
+
+    def _analyze(self):
+        src = self.src_var.get().strip()
+        if not src or not os.path.isfile(src):
+            safe_set(self.status_var, "Selecione um arquivo válido para analisar.")
+            return
+        # limpar
+        for i in self.tree.get_children():
+            self.tree.delete(i)
+        self.entries.clear()
+
+        try:
+            data = open(src, 'rb').read()
+            pattern = self.PATTERN
+            filesize = len(data)
+            offset = data.find(pattern)
+            while offset != -1 and offset < filesize:
+                name_start = offset + 8
+                name_end = data.find(b'\x00', name_start)
+                if name_end == -1:
+                    name_end = min(name_start + 64, filesize)
+                name = data[name_start:name_end].decode('utf-8', errors='ignore')
+                next_offset = data.find(pattern, offset + 4)
+                size = (filesize - offset) if next_offset == -1 else (next_offset - offset)
+                self.entries.append({'name': name, 'offset': offset, 'size': size})
+                offset = next_offset
+
+            for i, e in enumerate(self.entries, start=1):
+                self.tree.insert('', 'end', values=(i, e['name'], f"0x{e['offset']:X}", f"{e['size']}", ''))
+            safe_set(self.status_var, f"{len(self.entries)} entradas encontradas.")
+        except Exception as ex:
+            safe_set(self.status_var, f"Erro: {ex}")
+
+    def _start_extract(self):
+        if not self.entries:
+            safe_set(self.status_var, "Analise antes de extrair.")
+            return
+        prefix = self.out_prefix_var.get().strip() or 'output'
+        src = self.src_var.get().strip()
+        base = os.path.splitext(os.path.basename(src))[0]
+        out_dir = f"{prefix}_{base}_extracted"
+        os.makedirs(out_dir, exist_ok=True)
+        self.current_output_dir = out_dir
+        self.progress.configure(maximum=len(self.entries), value=0)
+        t = threading.Thread(target=self._extract_all, args=(src, out_dir), daemon=True)
+        t.start()
+
+    def _extract_all(self, src, out_dir):
+        try:
+            data = open(src, 'rb').read()
+            for i, e in enumerate(self.entries, start=1):
+                safe_set(self.status_var, f"Extraindo {i}/{len(self.entries)}: {e['name']}")
+                out_path = os.path.join(out_dir, e['name'])
+                with open(out_path, 'wb') as of:
+                    of.write(data[e['offset']: e['offset'] + e['size']])
+                item = self.tree.get_children()[i - 1]
+                self.tree.set(item, 'Caminho', out_path)
+                try:
+                    self.progress.step(1)
+                except tk.TclError:
+                    pass
+            safe_set(self.status_var, f"Extração concluída: {out_dir}")
+            messagebox.showinfo("Concluído", f"Arquivos extraídos em\n{out_dir}")
+        except Exception as ex:
+            messagebox.showerror("Erro", str(ex))
+            safe_set(self.status_var, "Erro durante a extração.")
+
+    def _start_pack(self):
+        if not self.entries:
+            safe_set(self.status_var, "Nenhuma entrada para empacotar. Rode a análise.")
+            return
+        folder = self.pack_folder_var.get().strip()
+        out_file = self.pack_out_var.get().strip()
+        if not folder or not os.path.isdir(folder):
+            safe_set(self.status_var, "Selecione uma pasta extraída válida.")
+            return
+        if not out_file:
+            safe_set(self.status_var, "Defina o caminho do arquivo de saída.")
+            return
+        self.progress.configure(maximum=len(self.entries), value=0)
+        threading.Thread(target=self._pack_all, args=(folder, out_file), daemon=True).start()
+
+    def _pack_all(self, folder, out_file):
+        try:
+            with open(out_file, 'wb') as wf:
+                wf.write(struct.pack('<I', 0x00000002))
+                for i, e in enumerate(self.entries, start=1):
+                    name = e['name']
+                    src_path = os.path.join(folder, name)
+                    safe_set(self.status_var, f"Empacotando {i}/{len(self.entries)}: {name}")
+                    with open(src_path, 'rb') as rf:
+                        wf.write(rf.read())
+                    try:
+                        self.progress.step(1)
+                    except tk.TclError:
+                        pass
+            safe_set(self.status_var, f"Empacotado: {out_file}")
+            messagebox.showinfo("Concluído", f"Arquivo salvo:\n{out_file}")
+        except Exception as ex:
+            messagebox.showerror("Erro", str(ex))
+            safe_set(self.status_var, "Erro durante o empacotamento.")
+
+
+# ===============================
+# UI: Aba de Textos (Dump/Insert + Editor)
+# ===============================
+class TextTab(ttk.Frame):
+    def __init__(self, master):
+        super().__init__(master)
+        self.msg_var = tk.StringVar()
+        self.tbl_var = tk.StringVar(value=TABLE_FILENAME)
+        self.action_var = tk.StringVar(value='dump')
+        self._build()
+
+    def _build(self):
+        # Entrada de arquivos
+        f1 = ttk.LabelFrame(self, text="Arquivo .msg", padding=8)
+        f1.pack(fill=tk.X, pady=(0,6))
+        ttk.Entry(f1, textvariable=self.msg_var).pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0,6))
+        ttk.Button(f1, text="Procurar...", command=self._choose_msg).pack(side=tk.LEFT)
+
+        f2 = ttk.LabelFrame(self, text="Tabela (.tbl)", padding=8)
+        f2.pack(fill=tk.X, pady=6)
+        ttk.Entry(f2, textvariable=self.tbl_var).pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0,6))
+        ttk.Button(f2, text="Procurar...", command=self._choose_tbl).pack(side=tk.LEFT)
+
+        # Ações de dump/insert
+        f3 = ttk.LabelFrame(self, text="Ação", padding=8)
+        f3.pack(fill=tk.X, pady=6)
+        ttk.Radiobutton(f3, text="Extrair (Dump)", variable=self.action_var, value='dump').pack(side=tk.LEFT, padx=(0,12))
+        ttk.Radiobutton(f3, text="Inserir (Insert)", variable=self.action_var, value='insert').pack(side=tk.LEFT)
+        self.btn_run = ttk.Button(f3, text="Executar", command=self._run_action)
+        self.btn_run.pack(side=tk.RIGHT)
+
+        # Editor + barra
+        editor_box = ttk.LabelFrame(self, text="Editor de Texto (scripts)", padding=6)
+        editor_box.pack(fill=tk.BOTH, expand=True, pady=6)
+
+        tb = ttk.Frame(editor_box)
+        tb.pack(fill=tk.X)
+        ttk.Button(tb, text="Carregar Dump", command=self._load_dump).pack(side=tk.LEFT)
+        ttk.Button(tb, text="Carregar Traduzido", command=self._load_translated).pack(side=tk.LEFT, padx=6)
+        ttk.Button(tb, text="Salvar Traduzido", command=self._save_translated).pack(side=tk.LEFT)
+        ttk.Button(tb, text="Inserir de TXT...", command=self._insert_from_txt_file).pack(side=tk.LEFT, padx=6)
+        ttk.Button(tb, text="Exportar Dump como...", command=self._export_dump_as).pack(side=tk.LEFT, padx=6)
+        ttk.Separator(tb, orient=tk.VERTICAL).pack(side=tk.LEFT, fill=tk.Y, padx=8)
+        ttk.Button(tb, text="Inserir a partir do Editor", command=self._insert_from_editor).pack(side=tk.LEFT)
+        ttk.Separator(tb, orient=tk.VERTICAL).pack(side=tk.LEFT, fill=tk.Y, padx=8)
+        ttk.Button(tb, text="Localizar...", command=self._find_dialog).pack(side=tk.LEFT)
+        ttk.Button(tb, text="Substituir...", command=self._replace_dialog).pack(side=tk.LEFT, padx=6)
+        ttk.Button(tb, text="Abrir Pasta", command=self._open_dirs).pack(side=tk.LEFT)
+
+        self.editor = ScrolledText(editor_box, wrap=tk.WORD, height=18, undo=True)
+        self.editor.pack(fill=tk.BOTH, expand=True, pady=(6,0))
+
+        # Log
+        log_box = ttk.LabelFrame(self, text="Status / Log", padding=6)
+        log_box.pack(fill=tk.BOTH, expand=False, pady=(6,0))
+        self.log = ScrolledText(log_box, wrap=tk.WORD, height=10, state=tk.DISABLED)
+        self.log.pack(fill=tk.BOTH, expand=True)
+        update_log(self.log, "Pronto.")
+
+    # ---- utilidades
+    def _choose_msg(self):
+        p = filedialog.askopenfilename(title='Selecionar .msg', filetypes=[('MSG', '*.msg'), ('Todos', '*.*')])
+        if p:
+            self.msg_var.set(p)
+
+    def _choose_tbl(self):
+        p = filedialog.askopenfilename(title='Selecionar .tbl', filetypes=[('Tabela', '*.tbl'), ('Todos', '*.*')])
+        if p:
+            self.tbl_var.set(p)
+
+    def _run_action(self):
+        msg = self.msg_var.get().strip()
+        tbl = self.tbl_var.get().strip()
+        if not msg or not os.path.exists(msg):
+            messagebox.showerror("Erro", ".msg inválido.")
+            return
+        if not tbl or not os.path.exists(tbl):
+            if not messagebox.askyesno("Tabela", "Tabela não encontrada. Deseja continuar com latin-1?"):
+                return
+        self.btn_run.configure(state=tk.DISABLED, text='Processando...')
+        update_log(self.log, f"Ação: {self.action_var.get().upper()}\nArquivo: {msg}\nTabela: {tbl}\n---")
+
+        def _go():
+            try:
+                if self.action_var.get() == 'dump':
+                    dumper_logic(msg, tbl, self.log, editor=self.editor)
+                else:
+                    inserter_logic_from_file(msg, tbl, self.log)
+            except Exception as e:
+                update_log(self.log, f"ERRO FATAL: {e}")
+            finally:
+                try:
+                    self.btn_run.configure(state=tk.NORMAL, text='Executar')
+                except tk.TclError:
+                    pass
+        threading.Thread(target=_go, daemon=True).start()
+
+    # ---- Editor helpers
+    def _derive_txt_paths(self):
+        msg = self.msg_var.get().strip()
+        if not msg:
+            return None, None
+        base = os.path.basename(msg) + '.txt'
+        return (os.path.join(ORIG_SCRIPT_DIR, base), os.path.join(TRANS_SCRIPT_DIR, base))
+
+    def _load_dump(self):
+        src, _ = self._derive_txt_paths()
+        if not src or not os.path.exists(src):
+            messagebox.showinfo("Dump", "Dump não encontrado. Rode 'Extrair (Dump)' primeiro.")
+            return
+        try:
+            self.editor.delete('1.0', tk.END)
+            self.editor.insert('1.0', open(src, 'r', encoding='utf-8').read())
+            update_log(self.log, f"Carregado do dump: {src}")
+        except Exception as e:
+            messagebox.showerror("Erro", str(e))
+
+    def _load_translated(self):
+        _, trg = self._derive_txt_paths()
+        if not trg or not os.path.exists(trg):
+            messagebox.showinfo("Traduzido", "Arquivo traduzido não encontrado (scripts_traduzidos).")
+            return
+        try:
+            self.editor.delete('1.0', tk.END)
+            self.editor.insert('1.0', open(trg, 'r', encoding='utf-8').read())
+            update_log(self.log, f"Carregado traduzido: {trg}")
+        except Exception as e:
+            messagebox.showerror("Erro", str(e))
+
+    def _ensure_dirs(self):
+        os.makedirs(ORIG_SCRIPT_DIR, exist_ok=True)
+        os.makedirs(TRANS_SCRIPT_DIR, exist_ok=True)
+
+    def _save_translated(self):
+        self._ensure_dirs()
+        _, trg = self._derive_txt_paths()
+        if not trg:
+            messagebox.showerror("Erro", "Selecione um .msg primeiro.")
+            return
+        try:
+            with open(trg, 'w', encoding='utf-8') as f:
+                f.write(self.editor.get('1.0', tk.END))
+            update_log(self.log, f"Traduzido salvo em: {trg}")
+        except Exception as e:
+            messagebox.showerror("Erro", str(e))
+
+    def _insert_from_txt_file(self):
+        msg = self.msg_var.get().strip()
+        tbl = self.tbl_var.get().strip()
+        if not msg or not os.path.exists(msg):
+            messagebox.showerror("Erro", ".msg inválido.")
+            return
+        if not tbl or not os.path.exists(tbl):
+            if not messagebox.askyesno("Tabela", "Tabela não encontrada. Deseja continuar com latin-1?"):
+                return
+        p = filedialog.askopenfilename(title="Selecionar .txt para inserir", filetypes=[('TXT','*.txt'), ('Todos','*.*')])
+        if not p:
+            return
+        try:
+            text = open(p, 'r', encoding='utf-8').read()
+        except Exception as e:
+            # FIX: f-string não pode quebrar linha dentro das chaves
+            messagebox.showerror("Erro", f"Falha ao ler TXT: {e}")
+            return
+        def _go():
+            try:
+                _write_encoded_text_to_msg(msg, tbl, text, self.log)
+            except Exception as e:
+                update_log(self.log, f"ERRO: {e}")
+        threading.Thread(target=_go, daemon=True).start()
+
+    def _export_dump_as(self):
+        msg = self.msg_var.get().strip()
+        tbl = self.tbl_var.get().strip()
+        if not msg or not os.path.exists(msg):
+            messagebox.showerror("Erro", ".msg inválido.")
+            return
+        if not tbl or not os.path.exists(tbl):
+            if not messagebox.askyesno("Tabela", "Tabela não encontrada. Deseja continuar com latin-1?"):
+                return
+        # Gera/atualiza o dump padrão na pasta scripts_originais
+        dumper_logic(msg, tbl, self.log, editor=None)
+        src, _ = self._derive_txt_paths()
+        if not src or not os.path.exists(src):
+            messagebox.showerror("Erro", "Dump não encontrado.")
+            return
+        dest = filedialog.asksaveasfilename(title="Salvar dump como...", defaultextension=".txt", initialfile=os.path.basename(src), filetypes=[('TXT','*.txt'), ('Todos','*.*')])
+        if not dest:
+            return
+        try:
+            shutil.copyfile(src, dest)
+            update_log(self.log, f"Dump exportado: {dest}")
+        except Exception as e:
+            # FIX: f-string não pode quebrar linha dentro das chaves
+            messagebox.showerror("Erro", f"Falha ao salvar: {e}")
+
+    def _insert_from_editor(self):
+        msg = self.msg_var.get().strip()
+        tbl = self.tbl_var.get().strip()
+        if not msg or not os.path.exists(msg):
+            messagebox.showerror("Erro", ".msg inválido.")
+            return
+        if not tbl or not os.path.exists(tbl):
+            if not messagebox.askyesno("Tabela", "Tabela não encontrada. Deseja continuar com latin-1?"):
+                return
+        text = self.editor.get('1.0', tk.END)
+
+        def _go():
+            try:
+                _write_encoded_text_to_msg(msg, tbl, text, self.log)
+            except Exception as e:
+                update_log(self.log, f"ERRO: {e}")
+            finally:
+                pass
+        threading.Thread(target=_go, daemon=True).start()
+
+    def _open_dirs(self):
+        self._ensure_dirs()
+        open_folder(ORIG_SCRIPT_DIR)
+        open_folder(TRANS_SCRIPT_DIR)
+
+    # ---- Localizar/Substituir
+    def _find_dialog(self):
+        self._simple_find_replace(find_only=True)
+
+    def _replace_dialog(self):
+        self._simple_find_replace(find_only=False)
+
+    def _simple_find_replace(self, find_only=True):
+        win = tk.Toplevel(self)
+        win.title("Localizar" if find_only else "Substituir")
+        win.resizable(False, False)
+        ttk.Label(win, text="Procurar por:").grid(row=0, column=0, padx=6, pady=6, sticky='w')
+        e_find = ttk.Entry(win, width=36)
+        e_find.grid(row=0, column=1, padx=6, pady=6)
+        e_find.focus_set()
+        e_repl = None
+        if not find_only:
+            ttk.Label(win, text="Substituir por:").grid(row=1, column=0, padx=6, pady=6, sticky='w')
+            e_repl = ttk.Entry(win, width=36)
+            e_repl.grid(row=1, column=1, padx=6, pady=6)
+
+        def do_find_next(*_):
+            target = e_find.get()
+            if not target:
+                return
+            idx = self.editor.search(target, self.editor.index(tk.INSERT), stopindex=tk.END)
+            if not idx:
+                idx = self.editor.search(target, '1.0', stopindex=tk.END)
+                if not idx:
+                    self.bell(); return
+            last = f"{idx}+{len(target)}c"
+            self.editor.tag_remove('sel', '1.0', tk.END)
+            self.editor.tag_add('sel', idx, last)
+            self.editor.mark_set(tk.INSERT, last)
+            self.editor.see(idx)
+
+        def do_replace(*_):
+            if find_only:
+                return
+            target = e_find.get(); repl = e_repl.get() if e_repl else ''
+            if not target:
+                return
+            idx = self.editor.search(target, '1.0', stopindex=tk.END)
+            while idx:
+                last = f"{idx}+{len(target)}c"
+                self.editor.delete(idx, last)
+                self.editor.insert(idx, repl)
+                idx = self.editor.search(target, last, stopindex=tk.END)
+
+        btns = ttk.Frame(win)
+        btns.grid(row=2, column=0, columnspan=2, pady=(0,8))
+        ttk.Button(btns, text="Localizar Próx.", command=do_find_next).pack(side=tk.LEFT, padx=4)
+        if not find_only:
+            ttk.Button(btns, text="Substituir Tudo", command=do_replace).pack(side=tk.LEFT, padx=4)
+
+
+# ===============================
+# Testes (execute com `python este_arquivo.py --selftest`)
+# ===============================
+
+def _run_selftests():
+    import unittest
+
+    class CoreTests(unittest.TestCase):
+        def test_contador_bytes(self):
+            buf = b"ABCD\x00EFG"
+            self.assertEqual(contador_bytes(buf, 0, len(buf)), 4)
+            self.assertEqual(contador_bytes(buf, 5, len(buf)), 0)
+            self.assertEqual(contador_bytes(buf, 6, len(buf)), 2)
+
+        def test_load_table_fallback(self):
+            b2c, c2b = load_table("__arquivo_que_nao_existe__.tbl")
+            # Deve mapear espaço e {00}
+            self.assertEqual(b2c.get(0x20), ' ')
+            self.assertEqual(b2c.get(0x00), '{00}')
+            self.assertEqual(c2b.get(' '), 0x20)
+
+        def test_update_log_safe(self):
+            # Não deve lançar mesmo com widget None
+            update_log(None, "teste")
+
+    suite = unittest.defaultTestLoader.loadTestsFromTestCase(CoreTests)
+    runner = unittest.TextTestRunner(verbosity=2)
+    result = runner.run(suite)
+    return 0 if result.wasSuccessful() else 1
+
+
+# ===============================
+# App principal
+# ===============================
+class UnifiedApp(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("Ferramentas de ROM - Pacotes & Textos")
+        self.minsize(980, 700)
+        self._apply_style()
+        self._build_ui()
+
+    def _apply_style(self):
+        style = ttk.Style(self)
+        # Escolhe tema "clam" por padrão (mais moderno que classic/default)
+        try:
+            style.theme_use('clam')
+        except Exception:
+            pass
+        style.configure('TButton', padding=6)
+        style.configure('TLabel', padding=2)
+        style.configure('TLabelframe', padding=8)
+        style.configure('TLabelframe.Label', font=('Segoe UI', 10, 'bold'))
+
+    def _build_ui(self):
+        nb = ttk.Notebook(self)
+        nb.pack(fill=tk.BOTH, expand=True)
+
+        self.pack_tab = PackTab(nb)
+        self.text_tab = TextTab(nb)
+        nb.add(self.pack_tab, text='Pacotes')
+        nb.add(self.text_tab, text='Textos')
+
+        # Barra inferior simples com troca de tema
+        bar = ttk.Frame(self)
+        bar.pack(fill=tk.X, side=tk.BOTTOM)
+        ttk.Label(bar, text="Tema:").pack(side=tk.LEFT, padx=(6,2))
+        theme_var = tk.StringVar(value=ttk.Style().theme_use())
+        themes = ttk.Style().theme_names()
+        cmb = ttk.Combobox(bar, values=themes, textvariable=theme_var, state='readonly', width=14)
+        cmb.pack(side=tk.LEFT, padx=(0,6))
+        def set_theme(*_):
+            try:
+                ttk.Style().theme_use(theme_var.get())
+            except Exception:
+                pass
+        cmb.bind('<<ComboboxSelected>>', set_theme)
+
+        ttk.Separator(bar, orient=tk.VERTICAL).pack(side=tk.LEFT, fill=tk.Y, padx=8)
+        ttk.Label(bar, text="Dica: use a aba Textos para editar e inserir direto no .msg").pack(side=tk.LEFT)
+
+
+if __name__ == '__main__':
+    if '--selftest' in sys.argv:
+        sys.exit(_run_selftests())
+    app = UnifiedApp()
+    app.mainloop()
