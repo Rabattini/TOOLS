@@ -1,17 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-App Unificado (Tkinter)
-- Aba "Pacotes": Unpack/Pack no estilo QuickBMS (analisar, extrair, empacotar)
-- Aba "Textos": Ferramenta MSG (Dump/Insert) + Editor embutido para carregar/editar .txt
-
-Baseado e conciliado a partir de dois scripts enviados pelo usuário.
-
-Requisitos: Python 3.x e Tkinter (padrão).
-
-Extras desta revisão:
-- Correção de SyntaxError em f-strings com quebras de linha.
-- Pequena suíte de testes (execute com `--selftest`) para funções puras.
-"""
 import os
 import sys
 import struct
