@@ -1,0 +1,24 @@
+# QuickBMS created by Rabatini
+# resources.bin extractor - One piece straw wars pirate defense(Big Endian)
+
+endian big
+
+# Header (12 bytes)
+get HEADER_UNK long     # usually 0x20
+get DATA_START long     # offset where data starts (end of the file table)
+get FILES long          # number of files
+
+# Each entry format:
+# u32 NAME_LEN (in your file it's 0x34)
+# char NAME[NAME_LEN] (null-terminated / padded string)
+# u32 OFFSET (absolute)
+# u32 SIZE
+
+for rip = 0 < FILES
+    get NAME_LEN long
+    getdstring NAME NAME_LEN
+    get OFFSET long
+    get SIZE long
+
+    log NAME OFFSET SIZE
+next rip
