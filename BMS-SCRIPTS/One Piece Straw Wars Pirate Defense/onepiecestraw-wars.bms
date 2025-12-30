@@ -9,7 +9,7 @@ get DATA_START long     # offset where data starts (end of the file table)
 get FILES long          # number of files
 
 # Each entry format:
-# u32 NAME_LEN (in your file it's 0x34)
+# u32 NAME_LEN (in this case it's 0x34)
 # char NAME[NAME_LEN] (null-terminated / padded string)
 # u32 OFFSET (absolute)
 # u32 SIZE
