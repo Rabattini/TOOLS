@@ -1,0 +1,22 @@
+# QuickBMS created by Rabatini
+# .O extractor - Crisis Beat (PSX)
+
+GET FILE ASIZE
+
+FOR
+    SAVEPOS TEMP
+    GET OFFSET LONG
+    GET NEXT_OFFSET LONG
+
+    IF NEXT_OFFSET == 0
+        MATH FILE - OFFSET
+        LOG "" OFFSET FILE
+        BREAK
+    ELSE
+        XMATH SIZE "NEXT_OFFSET - OFFSET"
+        LOG "" OFFSET SIZE
+
+        MATH TEMP + 4
+        GOTO TEMP
+    ENDIF
+NEXT
