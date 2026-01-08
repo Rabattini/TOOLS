@@ -1,0 +1,23 @@
+# Script to extract Destruction derby 2 .DAT files - Rabatini
+
+get END_OF_TABLE long
+goto 0
+
+# Lê o primeiro
+get OFFSET long
+
+for
+    savepos CURR_POS
+ 
+    if CURR_POS >= END_OF_TABLE
+        get FILE_END asize
+        xmath SIZE "FILE_END - OFFSET"
+        log "" OFFSET SIZE
+        break
+    endif
+
+    get NEXT_OFFSET long    
+    xmath SIZE "NEXT_OFFSET - OFFSET"    
+    log "" OFFSET SIZE    
+    math OFFSET = NEXT_OFFSET
+next
