@@ -1,0 +1,35 @@
+# Shin Combat Choro Q (Japan) (.CPK)
+
+Get UNK Long       
+Get FILES Long
+
+PutArray 0 FILES 0
+
+For rip = 0 < FILES
+    Get SHORT_OFF Short
+    
+    Math OFFSET = SHORT_OFF
+    Math OFFSET * 0x800
+    
+    PutArray 0 rip OFFSET
+Next rip
+
+For rip = 0 < FILES
+    GetArray OFFSET 0 rip
+    
+    Math NEXT_IDX = rip
+    Math NEXT_IDX + 1
+    
+    If NEXT_IDX < FILES
+        GetArray NEXT_OFFSET 0 NEXT_IDX
+    Else
+        Get NEXT_OFFSET Asize
+    EndIf
+    
+    Math SIZE = NEXT_OFFSET
+    Math SIZE - OFFSET
+    
+    If SIZE > 0
+        Log "" OFFSET SIZE
+    EndIf
+Next rip
