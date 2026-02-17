@@ -3,6 +3,7 @@
 Combined Blade PSX Tools
 Includes: RLE Compressor/Decompressor, SNDVRAM DAT Unpack/Pack,
 Image Split/Merge, Blade Common.dat Unpack/Pack, LevelBin Extract/Insert
+thanks Mummrar for Rle DELPHI CODE
 """
 
 import os
