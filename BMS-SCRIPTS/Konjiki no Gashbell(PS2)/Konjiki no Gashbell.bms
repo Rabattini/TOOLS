@@ -1,0 +1,89 @@
+#Konjiki no Gashbell (PS2) extractor by Rabatini
+
+open FDSE "SLPS_254.40" 1
+
+get ARCHIVE_SIZE asize 0
+get SLPS_SIZE    asize 1
+
+set BASE_LSN   long 311
+
+set VADDR_BASE long 0x247A80
+set FILE_BASE  long 0x148A80
+
+set SCAN_START long 0x001000
+math SCAN_END = SLPS_SIZE
+math SCAN_END - 0x1c
+
+set FOUND long 0
+
+for POS = SCAN_START < SCAN_END
+
+    goto POS 1
+    get NAME_PTR long 1
+    get TAG      long 1
+    get LSN      long 1
+    get SECTORS  long 1
+    get ALLOC    long 1
+    get SIZE     long 1
+    get FLAGS    long 1
+
+    if TAG == 0xFFFFFFFE
+        math EXPECT = SECTORS
+        math EXPECT * 0x800
+
+        if EXPECT == ALLOC
+            if SIZE > 0
+                if SIZE <= ALLOC
+
+                    math OFFSET = LSN
+                    math OFFSET - BASE_LSN
+                    if OFFSET >= 0
+                        math OFFSET * 0x800
+
+                        math END_OFF = OFFSET
+                        math END_OFF + SIZE
+                        if END_OFF <= ARCHIVE_SIZE
+
+                            
+                            set DUP long 0
+                            for J = 0 < FOUND
+                                getarray OLDLSN 0 J
+                                if OLDLSN == LSN
+                                    set DUP long 1
+                                    break
+                                endif
+                            next J
+
+                            if DUP == 0
+                                putarray 0 FOUND LSN
+                                math FOUND + 1
+
+                                string NAME p= "files/%05d_%08x_%08x.bin" FOUND LSN SIZE
+
+                                # tenta resolver o nome pelo ponteiro da entrada
+                                math NAME_OFF = NAME_PTR
+                                math NAME_OFF - VADDR_BASE
+                                math NAME_OFF + FILE_BASE
+
+                                if NAME_OFF >= 0
+                                    if NAME_OFF < SLPS_SIZE
+                                        goto NAME_OFF 1
+                                        getct TMP string 0x00 1
+                                        if TMP != ""
+                                            string NAME = TMP
+                                        endif
+                                    endif
+                                endif
+
+                                log NAME OFFSET SIZE 0
+                            endif
+                        endif
+                    endif
+                endif
+            endif
+        endif
+    endif
+
+    # o for adiciona +1 no next, então aqui somamos +3 = passo real de 4 bytes
+    math POS + 3
+next POS
